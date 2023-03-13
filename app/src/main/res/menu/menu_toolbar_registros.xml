@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <item android:title=""
+        android:id="@+id/btnAdd"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="ifRoom" />
+
+    <group android:id="@+id/group_delete"
+        android:visible="true">
+        <item android:id="@+id/menu_todos"
+            android:title="Todos" />
+        <item android:id="@+id/menu_finalizados"
+            android:title="Finalizados" />
+        <item android:id="@+id/menu_en_camino"
+            android:title="En Camino" />
+        <item android:id="@+id/menu_en_bodega"
+            android:title="En Bodega" />
+        <item android:id="@+id/menu_deuda"
+            android:title="Con Deuda" />
+        <item android:id="@+id/menu_incompletos"
+            android:title="Datos Incompletos" />
+        <item android:id="@+id/menu_activos"
+            android:title="Registros Activos" />
+        <item android:id="@+id/menu_eliminados"
+            android:title="Registros Eliminados" />
+    </group>
+
+
+</menu>

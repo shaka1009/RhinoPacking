@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFinalizar"
+    >
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <io.github.florent37.shapeofview.shapes.DiagonalView
+        android:id="@+id/diagonalView"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:elevation="4dp"
+        app:shape_diagonal_angle="10"
+        app:shape_diagonal_position="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center">
+
+            <ImageView
+                android:id="@+id/ciFotoEntrega"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/faFotoEntrega"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:backgroundTint="@color/black"
+                android:clickable="true"
+                android:focusable="true"
+                android:foregroundGravity="center"
+                android:tint="@color/white"
+                app:fabCustomSize="45dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ciFotoEntrega"
+                app:layout_constraintEnd_toEndOf="@+id/ciFotoEntrega"
+                app:srcCompat="@drawable/ic_camara" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </io.github.florent37.shapeofview.shapes.DiagonalView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diagonalView">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:text="Nombre de Cliente"
+            android:textAlignment="center"
+            android:textColor="@color/primaryDarkColor"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:text="Jesús Magallanes"
+            android:textAlignment="center"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Código"
+            android:textAlignment="center"
+            android:textColor="@color/primaryDarkColor"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/tvCodigo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:text="BOD123456"
+            android:textAlignment="center"
+            android:textSize="17sp" />
+
+
+        <TextView
+            android:id="@+id/tvPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:text="Precio$"
+            android:textAlignment="center"
+            android:textSize="40sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Método de pago"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/open_sans_bold"
+                    android:layout_marginBottom="5dp"/>
+
+
+                <LinearLayout
+                    android:id="@+id/llSinPagar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TableRow
+                        android:id="@+id/trSinPagar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="25dp"
+                            android:layout_weight="0"
+                            app:srcCompat="@drawable/metodo_debe" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/verdana"
+                            android:paddingStart="20dp"
+                            android:text="Sin Pagar"
+                            android:textColor="@color/Gris4"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbSinPagar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:checked="true"
+                            android:clickable="false"/>
+
+                    </TableRow>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llEfectivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TableRow
+                        android:id="@+id/trEfectivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_weight="0"
+                            android:layout_marginStart="25dp"
+                            app:srcCompat="@drawable/metodo_efectivo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/verdana"
+                            android:paddingStart="20dp"
+                            android:text="Efectivo"
+                            android:textColor="@color/Gris4"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbEfectivo"
+                            android:checked="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:clickable="false"/>
+
+                    </TableRow>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llTransferencia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TableRow
+                        android:id="@+id/trTransferencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_weight="0"
+                            android:layout_marginStart="25dp"
+                            app:srcCompat="@drawable/metodo_transferencia" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/verdana"
+                            android:paddingStart="20dp"
+                            android:text="Transferencia"
+                            android:textColor="@color/Gris4"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbTransferencia"
+                            android:checked="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:clickable="false"/>
+
+                    </TableRow>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llCortesia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TableRow
+                        android:id="@+id/trCortesia"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_weight="0"
+                            android:layout_marginStart="25dp"
+                            app:srcCompat="@drawable/home_cortesia" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/verdana"
+                            android:paddingStart="20dp"
+                            android:text="Cortesía"
+                            android:textColor="@color/Gris4"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbCortesia"
+                            android:checked="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:clickable="false"/>
+
+                    </TableRow>
+                </LinearLayout>
+
+            </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFinalizar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_press"
+            android:text="Finalizar"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_rojo"
+            android:backgroundTint="#595959"
+            android:text="Cancelar"
+            android:textColor="@color/white" />
+
+
+
+
+
+    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

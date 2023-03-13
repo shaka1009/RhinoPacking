@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlHardcoded"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp">
+            <ImageView
+                android:id="@+id/fotoRecibido"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:foregroundGravity="center"
+                android:src="@drawable/logo"
+                android:scaleType="centerCrop"
+                android:visibility="invisible"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignStart="@+id/fotoRecibido"
+                android:layout_alignTop="@+id/linearlayout"
+                android:layout_alignEnd="@+id/fotoRecibido"
+                android:layout_alignBottom="@+id/fotoRecibido"
+                android:layout_margin="20dp"
+
+
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="30dp"
+                android:backgroundTint="@color/black"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/black"
+                android:progress="100"
+                android:progressTint="@color/black" />
+
+            <LinearLayout
+                android:id="@+id/linearlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="0dp"
+                android:layout_toStartOf="@+id/llAlertas"
+                android:layout_toEndOf="@id/fotoRecibido"
+                android:layout_toRightOf="@id/fotoRecibido"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvCodigo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0dp"
+                    android:text="Codigo"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/llAlertas"
+                    android:singleLine="true"
+                    android:ellipsize = "end"
+                    android:text="Nombre"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvSemana"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Semana"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+
+
+            <LinearLayout
+                android:id="@+id/llAlertas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvAlertaFinalizado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:drawableStart="@drawable/ic_finalizado"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tvAlertaCamino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:drawableStart="@drawable/ic_camino"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tvAlertaBodega"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:drawableStart="@drawable/ic_bodega"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tvAlertaDeuda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone"
+                    android:drawableStart="@drawable/ic_deuda"/>
+                <TextView
+                    android:id="@+id/tvAlertaIncompleta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone"
+                    android:drawableStart="@drawable/ic_incompleta"/>
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alerta"
+                    android:textSize="14sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeRegistrosDetalles">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp">
+
+            <LinearLayout
+                android:id="@+id/llAlertas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginEnd="5dp"
+                android:gravity="center"
+                android:layout_gravity="right">
+                <TextView
+                    android:id="@+id/tvAlertaFinalizado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:drawableStart="@drawable/ic_finalizado"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tvAlertaCamino"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:drawableStart="@drawable/ic_camino"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tvAlertaBodega"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:drawableStart="@drawable/ic_bodega"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tvAlertaDeuda"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone"
+                    android:drawableStart="@drawable/ic_deuda"/>
+                <TextView
+                    android:id="@+id/tvAlertaIncompleta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone"
+                    android:drawableStart="@drawable/ic_incompleta"/>
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alerta"
+                    android:textSize="14sp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:id="@+id/ivFotoBodega"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logo" />
+                <ImageView
+                    android:id="@+id/ivFotoEntrega"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logo"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Código"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginStart="5dp" />
+                    <TextView
+                        android:id="@+id/tvCodigo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Código"
+                        android:textColor="@color/Gris4"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans"
+                        android:drawableStart="@drawable/ic_qr"
+                        android:gravity="center"
+                        android:drawablePadding="10dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datos de Cliente"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etNombre"
+                            android:textSize="14sp"
+                            android:textColor="@drawable/textcolor"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Nombre."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_nombre"
+                            android:drawablePadding="10dp"
+                            android:maxLength="40"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"
+                            android:enabled="true"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etTelefono"
+                            android:textSize="14sp"
+                            android:textColor="@drawable/textcolor"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Número de teléfono."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_telefono"
+                            android:drawablePadding="10dp"
+                            android:maxLength="10"
+                            android:inputType="phone"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"
+                            android:enabled="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:id="@+id/cvOperador"
+                android:visibility="gone">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datos de Operador"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etNombreOperador"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Nombre."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_nombre"
+                            android:drawablePadding="10dp"
+                            android:maxLength="40"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"
+                            android:enabled="true"
+                            android:clickable="false"
+                            android:focusable="false"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datos de Fecha"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginStart="5dp" />
+                    <TextView
+                        android:id="@+id/tvSemana"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Semana"
+                        android:textColor="@color/Gris4"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans"
+                        android:gravity="center"
+                        android:drawablePadding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tvFechaBodega"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="FechaBodega"
+                        android:textColor="@color/Gris4"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans"
+                        android:gravity="center"
+                        android:drawablePadding="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tvFechaEntrega"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="FechaEntrega"
+                        android:textColor="@color/Gris4"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans"
+                        android:gravity="center"
+                        android:drawablePadding="10dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Costo"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etCosto"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa el costo."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_precio"
+                            android:drawablePadding="10dp"
+                            android:maxLength="10"
+                            android:inputType="numberDecimal"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"
+                            android:textColor="@drawable/textcolor"
+                            android:enabled="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                    <View
+                        android:id="@+id/viewLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha=".5"
+                        android:background="@color/grisDefault"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Método de pago"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <LinearLayout
+                        android:id="@+id/llSinPagar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <TableRow
+                            android:id="@+id/trSinPagar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginStart="25dp"
+                                android:layout_weight="0"
+                                app:srcCompat="@drawable/metodo_debe" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:fontFamily="@font/verdana"
+                                android:paddingStart="20dp"
+                                android:text="Sin Pagar"
+                                android:textColor="@color/Gris4"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbSinPagar"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:checked="true"
+                                android:clickable="false"
+                                android:visibility="gone"/>
+
+                        </TableRow>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llEfectivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <TableRow
+                            android:id="@+id/trEfectivo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_weight="0"
+                                android:layout_marginStart="25dp"
+                                app:srcCompat="@drawable/metodo_efectivo" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:fontFamily="@font/verdana"
+                                android:paddingStart="20dp"
+                                android:text="Efectivo"
+                                android:textColor="@color/Gris4"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbEfectivo"
+                                android:checked="false"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:clickable="false"
+                                android:visibility="gone"/>
+
+                        </TableRow>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llTransferencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <TableRow
+                            android:id="@+id/trTransferencia"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_weight="0"
+                                android:layout_marginStart="25dp"
+                                app:srcCompat="@drawable/metodo_transferencia" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:fontFamily="@font/verdana"
+                                android:paddingStart="20dp"
+                                android:text="Transferencia"
+                                android:textColor="@color/Gris4"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbTransferencia"
+                                android:checked="false"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:clickable="false"
+                                android:visibility="gone"/>
+
+                        </TableRow>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/llCortesia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <TableRow
+                            android:id="@+id/trCortesia"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_weight="0"
+                                android:layout_marginStart="25dp"
+                                app:srcCompat="@drawable/home_cortesia" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:fontFamily="@font/verdana"
+                                android:paddingStart="20dp"
+                                android:text="Cortesía"
+                                android:textColor="@color/Gris4"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbCortesia"
+                                android:checked="false"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:clickable="false"
+                                android:visibility="gone"/>
+
+                        </TableRow>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:id="@+id/llObservaciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Observaciones (Opcional) "
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etObservaciones"
+                            android:textColor="@drawable/textcolor"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:layout_margin="5dp"
+                            android:drawablePadding="10dp"
+                            android:maxLength="200"
+                            android:gravity="left|center"
+                            android:singleLine="false"
+                            android:ellipsize = "end"
+                            android:enabled="true" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Paquetes"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvPaquetes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+
+
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnChangeStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_press"
+                android:fontFamily="@font/open_sans_semibold"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Asignar Operador"
+                android:textAllCaps="false"
+                android:textColor="#FFF"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:visibility="gone"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnFinalizar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_press"
+                android:fontFamily="@font/open_sans_semibold"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Finalizar Servicio"
+                android:textAllCaps="false"
+                android:textColor="#FFF"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:visibility="gone"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+
+
+
+
+
+
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

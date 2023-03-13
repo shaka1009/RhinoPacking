@@ -1,0 +1,69 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.RhinoPacking" parent="Theme.AppCompat.Light">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+
+        <!-- STATUS BAR. -->
+        <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/colorAccent</item>
+
+
+        <!-- TOOLBAR -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorSecondary">@color/white</item> <!-- ICONO -->
+
+        <item name="fontFamily">@font/verdana</item>
+    </style>
+
+    <style name="Theme.RhinoPacking.Loading" parent="Theme.RhinoPacking">
+        <item name="android:windowBackground">@drawable/loading_screen</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@color/white</item>
+    </style>
+
+    <style name="Theme.RhinoPacking.Login" parent="Theme.RhinoPacking">
+        <item name="colorSecondary">@color/colorAccent</item>
+        <item name="colorAccent">@color/primaryDarkColor</item>
+        <item name="colorControlNormal">@color/primaryDarkColor</item>
+        <item name="colorControlActivated">@color/primaryDarkColor</item>
+        <item name="colorOnSurface">@color/primaryDarkColor</item>    //Normal color
+        <item name="colorError">@color/primaryDarkColor</item>        //Error color
+    </style>
+
+
+
+    <style name="Theme.Design.BottomSheetDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+        <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+    </style>
+
+    <style name="Widget.ActionButton.Overflow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_filter</item>
+    </style>
+
+    <style name="Theme.RhinoPacking.FilterGroup" parent="Theme.RhinoPacking">
+        <item name="android:actionOverflowButtonStyle">@style/Widget.ActionButton.Overflow</item>
+    </style>
+
+    <style name="CardView"  parent="CardView.Light">
+        <!-- Toolbar -->
+        <item name="cardBackgroundColor">@color/grisDefault</item>
+        <item name="cardCornerRadius">7.5dp</item>
+        <item name="cardElevation">5dp</item>
+        <item name="cardUseCompatPadding">true</item>
+        <item name="background">@drawable/cardview_shadow</item>
+        <item name="android:padding">5dp</item>
+    </style>
+</resources>

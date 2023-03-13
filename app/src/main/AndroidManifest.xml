@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.RhinoPacking"
+        tools:targetApi="31"
+        android:screenOrientation="portrait">
+        <activity
+            android:name=".HomeTabulador"
+            android:exported="false" />
+        <activity
+            android:name=".HomeRegistrosDetallesAsignar"
+            android:exported="false" />
+        <activity
+            android:name=".HomeRegistrosDetalles"
+            android:exported="false" />
+        <activity
+            android:name=".HomeRegistrosAgregarPaquete"
+            android:exported="false" />
+        <activity
+            android:name=".HomeRegistrosAgregar"
+            android:exported="false" />
+        <activity
+            android:name=".HomeFinalizar"
+            android:exported="false" />
+        <activity
+            android:name=".HomeRegistros"
+            android:exported="false"
+            android:theme="@style/Theme.RhinoPacking.FilterGroup" />
+        <activity
+            android:name=".HomeAcerca"
+            android:exported="false" />
+        <activity
+            android:name=".LoginOTP"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="false"
+            android:theme="@style/Theme.RhinoPacking.Login" />
+        <activity
+            android:name=".Home"
+            android:exported="false" />
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.RhinoPacking.Loading">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".CaptureAct"
+            android:stateNotNeeded="true"
+            android:theme="@style/zxing_CaptureTheme" />
+    </application>
+
+</manifest>

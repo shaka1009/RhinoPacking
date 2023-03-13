@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/grisDefault" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="6dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+        <ImageView
+            android:id="@+id/fotoPaquete"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:foregroundGravity="center"
+            android:src="@drawable/logo"
+            android:scaleType="centerCrop"/>
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="0dp"
+            android:layout_toRightOf="@id/fotoPaquete"
+            android:layout_toEndOf="@id/fotoPaquete"
+            android:layout_toStartOf="@+id/llAlertas"
+            android:orientation="vertical"
+            android:layout_marginLeft="4dp">
+            <TextView
+                android:id="@+id/tvPaquete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:text="Paquete #"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/tvCantidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cantidad: "
+                android:textSize="14sp"
+                android:layout_alignEnd="@+id/llAlertas"
+                android:singleLine="true"
+                android:ellipsize = "end"/>
+            <TextView
+                android:id="@+id/tvMedidas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Medidas: "
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/llAlertas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
+            android:gravity="center">
+        <TextView
+            android:id="@+id/tvEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
+            android:text="Eliminar"
+            android:textSize="14sp"
+            android:textColor="@color/primaryColor"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+</LinearLayout>
+
+
+

@@ -1,0 +1,552 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeRegistrosAgregar">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clImagen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp">
+
+
+                <ImageView
+                    android:id="@+id/ciFotoBodega"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/faFotoBodega"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:fabCustomSize="45dp"
+                    android:clickable="true"
+                    android:foregroundGravity="center"
+                    android:tint="@color/white"
+                    android:backgroundTint="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/ciFotoBodega"
+                    app:layout_constraintEnd_toEndOf="@+id/ciFotoBodega"
+                    app:srcCompat="@drawable/ic_camara"
+                    android:focusable="true" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Código"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginStart="5dp" />
+                    <TextView
+                        android:id="@+id/tvCodigo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="Código"
+                        android:textColor="@color/Gris4"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/open_sans"
+                        android:drawableStart="@drawable/ic_qr"
+                        android:gravity="center"
+                        android:drawablePadding="10dp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Datos de Cliente"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etNombre"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa nombre de Cliente."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_nombre"
+                            android:drawablePadding="10dp"
+                            android:maxLength="40"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etTelefono"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa número de Teléfono."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_telefono"
+                            android:drawablePadding="10dp"
+                            android:maxLength="10"
+                            android:inputType="phone"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Costo"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etCosto"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa el costo."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_precio"
+                            android:drawablePadding="10dp"
+                            android:maxLength="10"
+                            android:inputType="numberDecimal"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                    <View
+                        android:id="@+id/viewLogin"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:alpha=".5"
+                        android:background="@color/grisDefault"
+                        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Método de pago"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                <LinearLayout
+                        android:id="@+id/llSinPagar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TableRow
+                        android:id="@+id/trSinPagar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="25dp"
+                            android:layout_weight="0"
+                            app:srcCompat="@drawable/metodo_debe" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/verdana"
+                            android:paddingStart="20dp"
+                            android:text="Sin Pagar"
+                            android:textColor="@color/Gris4"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbSinPagar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:checked="true"
+                            android:clickable="false"/>
+
+                    </TableRow>
+                    </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llEfectivo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TableRow
+                        android:id="@+id/trEfectivo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_weight="0"
+                            android:layout_marginStart="25dp"
+                            app:srcCompat="@drawable/metodo_efectivo" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/verdana"
+                            android:paddingStart="20dp"
+                            android:text="Efectivo"
+                            android:textColor="@color/Gris4"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbEfectivo"
+                            android:checked="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:clickable="false"/>
+
+                    </TableRow>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llTransferencia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TableRow
+                        android:id="@+id/trTransferencia"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_weight="0"
+                            android:layout_marginStart="25dp"
+                            app:srcCompat="@drawable/metodo_transferencia" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="4"
+                            android:fontFamily="@font/verdana"
+                            android:paddingStart="20dp"
+                            android:text="Transferencia"
+                            android:textColor="@color/Gris4"
+                            android:textSize="14sp" />
+
+                        <RadioButton
+                            android:id="@+id/rbTransferencia"
+                            android:checked="false"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="10dp"
+                            android:clickable="false"/>
+
+                    </TableRow>
+                </LinearLayout>
+
+                <LinearLayout
+                        android:id="@+id/llCortesia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TableRow
+                            android:id="@+id/trCortesia"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_weight="0"
+                                android:layout_marginStart="25dp"
+                                app:srcCompat="@drawable/home_cortesia" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:fontFamily="@font/verdana"
+                                android:paddingStart="20dp"
+                                android:text="Cortesía"
+                                android:textColor="@color/Gris4"
+                                android:textSize="14sp" />
+
+                            <RadioButton
+                                android:id="@+id/rbCortesia"
+                                android:checked="false"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="10dp"
+                                android:clickable="false"/>
+
+                        </TableRow>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Observaciones (Opcional) "
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etObservaciones"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa alguna observación."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_observaciones"
+                            android:drawablePadding="10dp"
+                            android:maxLength="200"
+                            android:gravity="left|center"
+                            android:singleLine="false"
+                            android:ellipsize = "end"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Paquetes"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvPaquetes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/grisDefault" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/ibAddPaquete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/btn_press_white"
+                        app:srcCompat="@drawable/ic_add_black" />
+
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAgregarRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_press"
+                android:fontFamily="@font/open_sans_semibold"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Añadir registro"
+                android:textAllCaps="false"
+                android:textColor="#FFF"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+
+                />
+
+
+
+
+
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

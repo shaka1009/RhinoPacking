@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">Rhino Packing</string>
+    <string name="version">v1.0.0</string>
+    <string name="desarrolladores">Jesús E. Magallanes Gervacio.</string>
+
+    <!--Login-->
+    <string name="getStarted">Empecemos</string>
+    <string name="descLogin">Ingresa tu número de teléfono, te enviaremos un código OTP para verificarte.</string>
+    <string name="descMobile">Número de celular.</string>
+    <string name="input_numero">Ingresa número de celular.</string>
+    <string name="loginBtnText">Envíar OTP</string>
+    <string name="terms">Al continuar, aceptas nuestros términos de Servicio, Política de privacidad y Política de contenido.</string>
+    <string name="password">Contraseña</string>
+    <!--FinLogin-->
+
+    <!--LoginOTP-->
+    <string name="proceso_verificacion">Proceso de verificación</string>
+    <string name="msg_continuar">Para continuar es necesario ingresar el código que te hemos enviado por mensaje de texto al número: </string>
+    <!--FinLoginOTP-->
+
+    <string name="acept">Aceptar</string>
+    <string name="reenviar">Reenviar</string>
+    <string name="verificar">Verificar</string>
+
+
+    <!--Home-->
+    <string name="perfil">Perfil</string>
+    <string name="acerca_de_app">Acerca de la App.</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <!--FinHome-->
+
+
+    <string name="confirmar_cierre_de_sesion">Confirmar Cierre de Sesión</string>
+    <string name="salir">Salir</string>
+    <string name="cancelar">Cancelar</string>
+
+    <string name="codigo">Código de Paquete</string>
+    <string name="buscar_paquete">Buscar Paquete</string>
+    <string name="codigo_nombre">Código o Nombre</string>
+
+    <string name="metodo_efectivo">Efectivo</string>
+
+</resources>

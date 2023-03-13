@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Login">
+
+    <TextView
+        android:id="@+id/textLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="0dp"
+        android:fontFamily="@font/raleway_black"
+        android:padding="15dp"
+        android:text="@string/app_name"
+        android:textColor="@color/colorAccent"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:id="@+id/llEmpecemos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/textLogo"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_semibold"
+            android:text="@string/getStarted"
+            android:textColor="@color/colorAccent"
+            android:textSize="22sp"
+            android:paddingBottom="14dp"/>
+        <TextView
+            android:id="@+id/descLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans"
+            android:text="@string/descLogin"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp"
+            android:paddingBottom="28dp"/>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/llTelefono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llEmpecemos"
+        android:layout_alignStart="@+id/llEmpecemos"
+        android:layout_alignEnd="@+id/llEmpecemos"
+        android:layout_marginEnd="0dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:fontFamily="@font/open_sans_light"
+            android:paddingBottom="1dp"
+            android:text="@string/descMobile"
+            android:textColor="@color/colorAccent" />
+
+        <RelativeLayout
+            android:id="@+id/rlTelefono"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.hbb20.CountryCodePicker
+                android:id="@+id/countryCodeHolder"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:ccp_textSize="16sp"
+                app:ccp_autoDetectCountry="true"
+                android:layout_centerVertical="true"/>
+            <com.santalu.maskara.widget.MaskEditText
+                android:id="@+id/etTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/countryCodeHolder"
+                android:hint="@string/input_numero"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:fontFamily="@font/open_sans"
+                android:inputType="phone"
+                android:maxLength="12"
+                android:layout_centerVertical="true"
+                app:mask="__ ____ ____"/>
+        </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/llPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_light"
+            android:text="@string/password"
+            android:textColor="@color/colorAccent"
+            android:paddingBottom="1dp"
+            android:layout_marginTop="17dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="password_toggle">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/etPassword"
+                android:textSize="18sp"
+                android:shadowColor="@color/black"
+                android:fontFamily="@font/open_sans"
+                android:inputType="textPassword"
+                android:hint="Ingresa contraseña."
+                android:maxLength="10"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/terms"
+        android:layout_alignStart="@+id/terms"
+        android:layout_alignEnd="@+id/terms"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_rojo"
+        android:fontFamily="@font/open_sans_semibold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/loginBtnText"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/pbLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btnSend"
+        android:layout_alignTop="@+id/btnSend"
+        android:layout_alignEnd="@+id/btnSend"
+        android:layout_alignBottom="@+id/btnSend"
+        android:backgroundTint="@color/colorAltPrimary"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorAltPrimary"
+        android:progress="100"
+        android:progressTint="@color/colorAltPrimary"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
+
+
+    <TextView
+        android:id="@+id/terms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/terms"
+        android:textAlignment="center"
+        android:textSize="13sp"
+        android:textColor="@color/colorAccent"
+        android:fontFamily="@font/open_sans"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
+
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/snackbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</RelativeLayout>

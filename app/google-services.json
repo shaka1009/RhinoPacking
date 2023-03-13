@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "928319844096",
+    "project_id": "rhino-packing",
+    "storage_bucket": "rhino-packing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928319844096:android:18dee1831b4d30fa82cde5",
+        "android_client_info": {
+          "package_name": "com.rhinopacking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928319844096-pnlnn2pfau25hjr6upvq5l0aiei6ekc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2fvddi3t148P8sulqBvbxmsKttkq1VcY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928319844096-pnlnn2pfau25hjr6upvq5l0aiei6ekc3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
