@@ -1,12 +1,17 @@
 package com.rhinopacking;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +25,13 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.github.dhaval2404.imagepicker.constant.ImageProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rhinopacking.DB.SQL;
 import com.rhinopacking.includes.PopupError;
@@ -31,7 +40,9 @@ import com.rhinopacking.includes.SnackbarError;
 import com.rhinopacking.includes.Toolbar;
 import com.rhinopacking.models.Registro;
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class HomeFinalizar extends AppCompatActivity {
     String codigo;
@@ -67,6 +78,13 @@ public class HomeFinalizar extends AppCompatActivity {
     Registro registro;
 
     private PopupError mPopupError;
+
+    private static final String[] PERMISSIONS_STORAGE = {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +98,8 @@ public class HomeFinalizar extends AppCompatActivity {
         mSql.close();
 
         cargarDatos();
+
+        ActivityCompat.requestPermissions(HomeFinalizar.this,PERMISSIONS_STORAGE,30);
     }
 
     @SuppressLint("SetTextI18n")
@@ -178,8 +198,8 @@ public class HomeFinalizar extends AppCompatActivity {
                 return;
             else
                 pressButton = true;
-            camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
-            SleepButton();
+            PickImage();
+            //camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
         });
 
         btnCancelar.setOnClickListener(view -> {
@@ -316,6 +336,9 @@ public class HomeFinalizar extends AppCompatActivity {
                         runOnUiThread(() -> {
                             Toast.makeText(this, "Entrega Finalizada.", Toast.LENGTH_SHORT).show();
                         });
+
+                        saveImagen(bitmap);
+
                         Intent resultIntent = new Intent();
                         setResult(RESULT_OK, resultIntent);
                         finish();
@@ -332,6 +355,11 @@ public class HomeFinalizar extends AppCompatActivity {
                         runOnUiThread(() -> {
                             Toast.makeText(this, "Entrega Finalizada.", Toast.LENGTH_SHORT).show();
                         });
+
+                        saveImagen(bitmap);
+
+                        Intent resultIntent = new Intent();
+                        setResult(RESULT_OK, resultIntent);
                         finish();
                     }
                     else {
@@ -343,6 +371,84 @@ public class HomeFinalizar extends AppCompatActivity {
                 }
             }).start();
         });
+    }
+
+    private void PickImage() {
+        ImagePicker.Companion.with(HomeFinalizar.this)
+                .crop()
+                .cropSquare()
+                .maxResultSize(Home.RESOLUCION,Home.RESOLUCION)
+                .provider(ImageProvider.BOTH) //Or bothCameraGallery()
+                .start();
+    }
+
+    private void saveImagen(Bitmap bitmap)
+    {
+        try {
+
+            File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
+            if (!mainDir.exists()) {
+                if(mainDir.mkdirs())
+                {
+                    Log.d("Shaka", "Dir creado:"+ mainDir);
+                }
+
+                else
+                {
+                    Log.d("Shaka", "Dir No creado:"+ mainDir);
+                }
+
+
+            }
+            else
+            {
+                Log.d("Shaka", "existe" + mainDir);
+            }
+
+
+
+            String imageName = crearNombreArchivoJPG(codigo);
+            File file = new File(mainDir, imageName);
+            OutputStream out;
+            try {
+                out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                out.flush();
+                out.close();
+
+            }catch (Exception e)
+            {
+                Log.d("SHAKA", "Error: " + e);
+            }
+
+        }
+
+        catch (Exception e) {
+            Log.d("SHAKA", "Error: " + e);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            Uri uri=data.getData();
+            //imageView.setImageURI(uri);
+
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+                ciFotoEntrega.setImageBitmap(bitmap);
+
+            }catch (Exception e) {}
+
+            SleepButton();
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+            SleepButton();
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
+            SleepButton();
+        }
     }
 
     private boolean isConnected(){

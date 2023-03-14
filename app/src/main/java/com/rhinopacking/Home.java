@@ -40,6 +40,8 @@ import java.util.StringTokenizer;
 
 public class Home extends AppCompatActivity {
 
+    static final int RESOLUCION = 1080;
+
     private DrawerLayout drawer;
     NavigationView navigationView;
 
@@ -81,6 +83,11 @@ public class Home extends AppCompatActivity {
     }
 
 
+    private static final String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE
+    };
 
     @SuppressLint("CutPasteId")
     private void declaration() {
@@ -94,8 +101,9 @@ public class Home extends AppCompatActivity {
 
         //REVISAR PERMISOS
         if (ContextCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
+            requestPermissions(new String []{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1000);
         }
+        requestPermissions(PERMISSIONS_STORAGE,30);
 
         mPopupCerrarSesion = new PopupCerrarSesion(this, getApplicationContext(), findViewById(R.id.popupError));
 

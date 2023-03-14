@@ -3,7 +3,9 @@ package com.rhinopacking;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,11 +20,13 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.rhinopacking.DB.SQL;
 import com.rhinopacking.adapters.RegistroPaquetesListAdapter;
 import com.rhinopacking.includes.PopupEliminar;
@@ -149,7 +153,9 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
             {
                 Intent intent = new Intent(HomeRegistrosDetalles.this, HomeFinalizar.class);
                 intent.putExtra("codigo", contents);
-                startActivity(intent);
+                //startActivity(intent);
+
+                someActivityResultLauncher.launch(intent);
             }
             else {
                 runOnUiThread(() -> {
@@ -292,6 +298,17 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
             });
 
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            //loadDatos(); //aquí debería ser carga de status nuevo, pago, metodo
+            Intent resultIntent = new Intent();
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        }
+    }
 
     private void SleepButton()
     {

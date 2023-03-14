@@ -1,8 +1,11 @@
 package com.rhinopacking;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
@@ -10,14 +13,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.github.dhaval2404.imagepicker.constant.ImageProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rhinopacking.includes.PopupError;
 import com.rhinopacking.includes.PopupMostrarFoto;
@@ -48,6 +56,12 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
 
     PopupMostrarFoto mPopupMostrarFoto;
 
+    private static final String[] PERMISSIONS_STORAGE = {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +70,8 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
 
         declaration();
         listenner();
+
+        ActivityCompat.requestPermissions(HomeRegistrosAgregarPaquete.this,PERMISSIONS_STORAGE,30);
     }
 
     private void declaration() {
@@ -119,7 +135,8 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
         });
 
         faFotoPaquete.setOnClickListener(view ->{
-            camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+            PickImage();
+            //camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
         });
 
 
@@ -139,7 +156,7 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
                 Intent resultIntent = new Intent();
                 resultIntent.putExtra("cantidad", etCantidad.getText().toString().replaceAll("X", "x"));
                 resultIntent.putExtra("medidas", etMedidas.getText().toString());
-                resultIntent.putExtra("foto_paquete", extras);
+                resultIntent.putExtra("foto_paquete", uri.toString());
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }
@@ -155,6 +172,34 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
                 clFoto.setVisibility(View.VISIBLE);
         });
 
+    }
+
+    private void PickImage() {
+        ImagePicker.Companion.with(HomeRegistrosAgregarPaquete.this)
+                .crop()
+                .cropSquare()
+                .maxResultSize(Home.RESOLUCION,Home.RESOLUCION)
+                .provider(ImageProvider.BOTH) //Or bothCameraGallery()
+                .start();
+    }
+    Uri uri;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            uri=data.getData();
+            //imageView.setImageURI(uri);
+
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+                ciFotoPaquete.setImageBitmap(bitmap);
+
+            }catch (Exception e) {}
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
