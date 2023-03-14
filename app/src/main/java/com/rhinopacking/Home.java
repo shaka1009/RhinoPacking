@@ -40,7 +40,7 @@ import java.util.StringTokenizer;
 
 public class Home extends AppCompatActivity {
 
-    static final int RESOLUCION = 1080;
+    static final int RESOLUCION = 720;
 
     private DrawerLayout drawer;
     NavigationView navigationView;

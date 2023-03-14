@@ -385,8 +385,8 @@ public class HomeFinalizar extends AppCompatActivity {
     private void saveImagen(Bitmap bitmap)
     {
         try {
-
-            File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
+            File mainDir= new File(Environment.getExternalStorageDirectory().getPath(), "RhinoPacking");
+            //File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
             if (!mainDir.exists()) {
                 if(mainDir.mkdirs())
                 {
@@ -476,7 +476,7 @@ public class HomeFinalizar extends AppCompatActivity {
 
     private String crearNombreArchivoJPG(String codigo)
     {
-        return "ENT" + "_" + codigo;
+        return codigo + "_ENT" + ".jpg";
     }
 
     private void SleepButton()

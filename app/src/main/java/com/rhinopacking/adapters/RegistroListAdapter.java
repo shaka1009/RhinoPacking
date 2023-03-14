@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +19,11 @@ import com.rhinopacking.DB.SQL;
 import com.rhinopacking.R;
 import com.rhinopacking.models.Registro;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 
@@ -184,20 +188,56 @@ public class RegistroListAdapter extends RecyclerView.Adapter<RegistroListAdapte
     private void guardarImagen(String codigo, Bitmap bitmap)
     {
         try {
-            FileOutputStream fos = ((Activity) context).openFileOutput(crearNombreArchivoJPG(codigo), Context.MODE_PRIVATE);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.close();
+
+            File mainDir= new File(Environment.getExternalStorageDirectory().getPath(), "RhinoPacking");
+            //File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
+            if (!mainDir.exists()) {
+                if(mainDir.mkdirs())
+                {
+                    Log.d("Shaka", "Dir creado:"+ mainDir);
+                }
+
+                else
+                {
+                    Log.d("Shaka", "Dir No creado:"+ mainDir);
+                }
+            }
+            else
+            {
+                Log.d("Shaka", "existe" + mainDir);
+
+
+                String imageName = crearNombreArchivoJPG(codigo);
+                File file = new File(mainDir, imageName);
+                OutputStream out;
+                try {
+                    out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+
+                }catch (Exception e)
+                {
+                    Log.d("SHAKA", "Error: " + e);
+                }
+            }
+
+
 
         } catch (Exception e){}
     }
 
     private String crearNombreArchivoJPG(String codigo)
     {
-        return "REC" + "_" + codigo;
+        return codigo +"_REC" + ".jpg";
     }
 
     private Bitmap getBitmapFromDir(String codigo) throws IOException {
-        FileInputStream read = ((Activity) context).openFileInput("REC" + "_" + codigo);
+        //FileInputStream read = ((Activity) context).openFileInput(codigo + "_REC" + ".jpg");
+
+        String cadena = Environment.getExternalStorageDirectory().toString() + "/RhinoPacking" + "/" + codigo + "_REC" + ".jpg";
+        FileInputStream read = new FileInputStream(cadena);
+
         int size = read.available();
         byte[] buffer = new byte[size];
         read.read(buffer);

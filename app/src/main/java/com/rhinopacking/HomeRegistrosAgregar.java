@@ -396,8 +396,8 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
     private void saveImagen(Bitmap bitmap)
     {
         try {
-
-            File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
+            File mainDir= new File(Environment.getExternalStorageDirectory().getPath(), "RhinoPacking");
+            //File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
             if (!mainDir.exists()) {
                 if(mainDir.mkdirs())
                 {
@@ -408,15 +408,11 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                 {
                     Log.d("Shaka", "Dir No creado:"+ mainDir);
                 }
-
-
             }
             else
             {
                 Log.d("Shaka", "existe" + mainDir);
             }
-
-
 
             String imageName = crearNombreArchivoJPG(codigo);
             File file = new File(mainDir, imageName);
@@ -429,8 +425,6 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
             }catch (Exception e)
             {
-
-                Toast.makeText(this, "ERROR " + e, Toast.LENGTH_SHORT).show();
                 Log.d("SHAKA", "Error: " + e);
             }
 
@@ -443,7 +437,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
     private String crearNombreArchivoJPG(String codigo)
     {
-        return "REC" + "_" + codigo + ".jpg";
+        return codigo + "_REC" + ".jpg";
     }
 
 
