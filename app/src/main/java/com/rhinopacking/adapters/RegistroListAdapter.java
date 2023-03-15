@@ -206,7 +206,6 @@ public class RegistroListAdapter extends RecyclerView.Adapter<RegistroListAdapte
             {
                 Log.d("Shaka", "existe" + mainDir);
 
-
                 String imageName = crearNombreArchivoJPG(codigo);
                 File file = new File(mainDir, imageName);
                 OutputStream out;
@@ -221,9 +220,6 @@ public class RegistroListAdapter extends RecyclerView.Adapter<RegistroListAdapte
                     Log.d("SHAKA", "Error: " + e);
                 }
             }
-
-
-
         } catch (Exception e){}
     }
 

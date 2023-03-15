@@ -3,9 +3,13 @@ package com.rhinopacking;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,12 +44,18 @@ import com.rhinopacking.models.RegistroPaquete;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeRegistrosDetalles extends AppCompatActivity {
 
 
+    Bitmap bitmap;
     Registro registro;
 
     String codigo;
@@ -76,7 +86,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
     private boolean pressButton;
 
-    CardView cvOperador;
+    CardView cvOperador, cvGuias;
 
     PopupEliminar mPopup;
     PopupMostrarFoto mPopupMostrarFoto;
@@ -105,6 +115,8 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         //llProgress = findViewById(R.id.llProgress);
         mSql = new SQL();
         registro = new Registro();
+
+        bitmap = null;
 
         mPopup = new PopupEliminar(this, getApplicationContext(), findViewById(R.id.popupEliminar));
 
@@ -145,6 +157,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         etNombreOperador = findViewById(R.id.etNombreOperador);
 
         cvOperador = findViewById(R.id.cvOperador);
+        cvGuias = findViewById(R.id.cvGuias);
         habilitar(false);
 
         btnFinalizar = findViewById(R.id.btnFinalizar);
@@ -551,12 +564,22 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                 {
                     mRegistrosGuias = mSql.getmRegistrosGuias();
 
-                    runOnUiThread(() -> {
-                        registrosGuiaListAdapter = new RegistroGuiasListAdapter(mRegistrosGuias, this);
-                        mRecyclerGuias.setHasFixedSize(true);
-                        mRecyclerGuias.setLayoutManager(new LinearLayoutManager(this));
-                        mRecyclerGuias.setAdapter(registrosGuiaListAdapter);
-                    });
+                    if(mRegistrosGuias.size()!=0)
+                    {
+                        runOnUiThread(() -> {
+                            registrosGuiaListAdapter = new RegistroGuiasListAdapter(mRegistrosGuias, this);
+                            mRecyclerGuias.setHasFixedSize(true);
+                            mRecyclerGuias.setLayoutManager(new LinearLayoutManager(this));
+                            mRecyclerGuias.setAdapter(registrosGuiaListAdapter);
+                        });
+                    }
+                    else {
+                        runOnUiThread(() -> {
+                            cvGuias.setVisibility(View.GONE);
+                        });
+                    }
+
+
                 }
 
             }).start();
@@ -567,6 +590,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
     }
 
+
     private void leerFotos() {
         new Thread(() -> {
 
@@ -574,23 +598,140 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
 
 
-            runOnUiThread(() -> {
+            new Thread(() -> {
+                try
+                {
+                    registro.setFoto_recibido(getBitmapFromDir(codigo, "REC"));
+                }
+                catch(Exception e)
+                {
+                    if(mSql.downloadImagen(codigo))
+                    {
+                        registro.setFoto_recibido(mSql.getImagen());
+                        new Thread(() -> {
+                            guardarImagen(codigo, registro.getFoto_recibido());
+                        }).start();
+                    }
+                    else
+                    {
+                        //BITMAP = IMAGEN DE FALLO;
+                    }
+                }
 
-                ivFotoBodega.setImageBitmap(registro.getFoto_recibido());
-            });
+                runOnUiThread(() -> {
+                    ivFotoBodega.setImageBitmap(registro.getFoto_recibido());
+                    ivFotoBodega.setVisibility(View.VISIBLE);
+                });
+
+
+
+            }).start();
+
+
+
+
+
+
+
+            
 
 
             if(registro.getStatus().equals("FINALIZADO"))
             {
-                runOnUiThread(() -> {
-                    ivFotoEntrega.setImageBitmap(registro.getFoto_entrega());
-                    ivFotoEntrega.setVisibility(View.VISIBLE);
-                });
+
+
+
+                new Thread(() -> {
+                    try
+                    {
+                        registro.setFoto_entrega(getBitmapFromDir(codigo, "ENT"));
+                    }
+                    catch(Exception e)
+                    {
+                        if(mSql.downloadImagenEntrega(codigo))
+                        {
+                            registro.setFoto_entrega(mSql.getImagen());
+                            new Thread(() -> {
+                                guardarImagen(codigo, registro.getFoto_entrega());
+                            }).start();
+                        }
+                        else
+                        {
+                            //BITMAP = IMAGEN DE FALLO;
+                        }
+                    }
+
+                    runOnUiThread(() -> {
+                        ivFotoEntrega.setImageBitmap(registro.getFoto_entrega());
+                        ivFotoEntrega.setVisibility(View.VISIBLE);
+                    });
+
+
+
+                }).start();
+
 
             }
 
 
         }).start();
+    }
+
+    private void guardarImagen(String codigo, Bitmap bitmap)
+    {
+        try {
+
+            File mainDir= new File(Environment.getExternalStorageDirectory().getPath(), "RhinoPacking");
+            //File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
+            if (!mainDir.exists()) {
+                if(mainDir.mkdirs())
+                {
+                    Log.d("Shaka", "Dir creado:"+ mainDir);
+                }
+
+                else
+                {
+                    Log.d("Shaka", "Dir No creado:"+ mainDir);
+                }
+            }
+            else
+            {
+                Log.d("Shaka", "existe" + mainDir);
+
+                String imageName = crearNombreArchivoJPG(codigo);
+                File file = new File(mainDir, imageName);
+                OutputStream out;
+                try {
+                    out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+
+                }catch (Exception e)
+                {
+                    Log.d("SHAKA", "Error: " + e);
+                }
+            }
+        } catch (Exception e){}
+    }
+
+    private String crearNombreArchivoJPG(String codigo)
+    {
+        return codigo +"_ENT" + ".jpg";
+    }
+
+    private Bitmap getBitmapFromDir(String codigo, String input) throws IOException {
+        //FileInputStream read = ((Activity) context).openFileInput(codigo + "_REC" + ".jpg");
+
+        String cadena = Environment.getExternalStorageDirectory().toString() + "/RhinoPacking" + "/" + codigo + "_" + input + ".jpg";
+        FileInputStream read = new FileInputStream(cadena);
+
+        int size = read.available();
+        byte[] buffer = new byte[size];
+        read.read(buffer);
+        read.close();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+        return bitmap;
     }
 
     private void leerStatus(){
@@ -650,9 +791,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
             }
 
             String finalStatus = status;
-            runOnUiThread(() -> {
-                tvStatus.setText(finalStatus);
-            });
+            runOnUiThread(() -> tvStatus.setText(finalStatus));
         }).start();
     }
 
@@ -708,7 +847,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         return true;
     }
 
-    @SuppressLint("RtlHardcoded")
+    @SuppressLint({"RtlHardcoded", "NonConstantResourceId"})
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId())
@@ -818,24 +957,18 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         }
         if(etTelefono.getText().toString().equals(""))
         {
-            runOnUiThread(() -> {
-                mPopupError.setPopupError("Debes ingresar el Teléfono.");
-            });
+            runOnUiThread(() -> mPopupError.setPopupError("Debes ingresar el Teléfono."));
             SleepButton();
         }
         else if (etTelefono.length() !=0 && etTelefono.length() != 10)
         {
 
-            runOnUiThread(() -> {
-                mPopupError.setPopupError("El número de teléfono debe ser de 10 dígitos.");
-            });
+            runOnUiThread(() -> mPopupError.setPopupError("El número de teléfono debe ser de 10 dígitos."));
             SleepButton();
         }
         else if(etCosto.getText().toString().equals(""))
         {
-            runOnUiThread(() -> {
-                mPopupError.setPopupError("Debes ingresar el Costo.");
-            });
+            runOnUiThread(() -> mPopupError.setPopupError("Debes ingresar el Costo."));
             SleepButton();
         }
         else {

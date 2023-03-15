@@ -2,6 +2,7 @@ package com.rhinopacking.DB;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -11,6 +12,11 @@ import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,8 +47,8 @@ public class SQL {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.2:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.2:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("DEPURACION", "ERROR: " + e);}
@@ -119,43 +125,11 @@ public class SQL {
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT * FROM dbo.registros WHERE dbo.registros.codigo = '"+codigo+"'");
-
-
-
+            rs = stm.executeQuery("SELECT codigo, nombre, telefono, precio, pagado, status, observaciones, fecha_almacen, fecha_entrega, activo, metodo_pago, id_operador FROM dbo.registros WHERE dbo.registros.codigo = '"+codigo+"'");
 
             while(rs.next()){
-                //registro = new Registro(rs.getString("codigo"), rs.getString("nombre"), rs.getString("status"),rs.getBoolean("pagado"), rs.getDate("fecha_almacen"), rs.getBoolean("activo"), rs.getFloat("precio"), rs.getString("telefono"));
-                registro.setStatus(rs.getString("status"));
-                registro.setPagado(rs.getBoolean("pagado"));
-                registro.setPrecio(rs.getFloat("precio"));
-                registro.setTelefono(rs.getString("telefono"));
-
-                byte[] bytes = rs.getBytes("foto_recibido");
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                registro.setFoto_recibido(bitmap);
-                registro.setFecha_almacen(rs.getTimestamp("fecha_almacen"));
-                registro.setFecha_entrega(rs.getTimestamp("fecha_entrega"));
-
-                registro.setNombre(rs.getString("nombre"));
-                registro.setTelefono(rs.getString("telefono"));
-
-                registro.setPrecio(rs.getFloat("precio"));
-
-                registro.setPagado(rs.getBoolean("pagado"));
-                registro.setMetodo(rs.getInt("metodo_pago"));
-                registro.setObservaciones(rs.getString("observaciones"));
-                registro.setId_operador(rs.getInt("id_operador"));
-                registro.setActivo(rs.getBoolean("activo"));
-
-
-
-                if(rs.getString("status").equals("FINALIZADO"))
-                {
-                    bytes = rs.getBytes("foto_entrega");
-                    bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    registro.setFoto_entrega(bitmap);
-                }
+                registro = new Registro(rs.getString("codigo"), rs.getString("nombre"), rs.getString("telefono"), rs.getFloat("precio"), rs.getBoolean("pagado"), rs.getString("status")
+                        ,rs.getString("observaciones"), rs.getTimestamp("fecha_almacen"), rs.getTimestamp("fecha_entrega"), rs.getBoolean("activo"), rs.getInt("metodo_pago"), rs.getInt("id_operador"));
 
                 return true;
             }
@@ -173,17 +147,50 @@ public class SQL {
         mRegistrosPaquetes = new ArrayList<>();
         RegistroPaquete registroPaquete;
         ResultSet rs;
+        ResultSet rsPaq;
         Statement stm;
+        Statement stmPaq;
         try{
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT * FROM dbo.registros_paquete WHERE codigo='"+codigo+"'");
+            rs = stm.executeQuery("SELECT id_paquete, cantidad, medidas FROM dbo.registros_paquete WHERE codigo='"+codigo+"'");
 
             while(rs.next()){
-                byte[] bytes = rs.getBytes("foto");
+
                 index = rs.getInt("id_paquete");
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+
+                //LEER O GUARDAR
+                try
+                {
+                    bitmap = getBitmapFromDir(codigo, "PAQ", index);
+                    Log.d("Shaka", "Imagen leída desde memoria");
+                }
+                catch (Exception e)
+                {
+                    try
+                    {
+                        stmPaq = mConection.createStatement();
+                        rsPaq = stmPaq.executeQuery("SELECT foto FROM dbo.registros_paquete WHERE id_paquete='"+index+"'");
+
+
+                        while(rsPaq.next())
+                        {
+                            byte[] bytes = rsPaq.getBytes("foto");
+                            bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                            guardarImagen(codigo, "PAQ", bitmap, index);
+                            Log.d("Shaka", "Imagen leída desde SQL");
+
+                        }
+                    }catch (Exception i)
+                    {
+                        Log.d("Shaka", "Error: " + i);
+                    }
+                }
+
+
                 registroPaquete = new RegistroPaquete(index, codigo, rs.getInt("cantidad"), rs.getString("medidas"), bitmap);
                 mRegistrosPaquetes.add(registroPaquete);
             }
@@ -194,25 +201,122 @@ public class SQL {
         }
     }
 
+    private void guardarImagen(String codigo, String nom , Bitmap bitmap, int index)
+    {
+        try {
 
+            File mainDir= new File(Environment.getExternalStorageDirectory().getPath(), "RhinoPacking");
+            //File mainDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"", "RhinoPacking");
+            if (!mainDir.exists()) {
+                if(mainDir.mkdirs())
+                {
+                    Log.d("Shaka", "Dir creado:"+ mainDir);
+                }
+
+                else
+                {
+                    Log.d("Shaka", "Dir No creado:"+ mainDir);
+                }
+            }
+            else
+            {
+                Log.d("Shaka", "existe" + mainDir);
+
+                String imageName = crearNombreArchivoJPG(codigo, nom, index);
+                File file = new File(mainDir, imageName);
+                OutputStream out;
+                try {
+                    out = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                    out.flush();
+                    out.close();
+
+                }catch (Exception e)
+                {
+                    Log.d("SHAKA", "Error: " + e);
+                }
+            }
+        } catch (Exception e){}
+    }
+
+    private String crearNombreArchivoJPG(String codigo, String nom,  int index)
+    {
+        return codigo +"_" + nom + index + ".jpg";
+    }
+
+    private Bitmap getBitmapFromDir(String codigo, String nom, int index) throws IOException {
+        //FileInputStream read = ((Activity) context).openFileInput(codigo + "_REC" + ".jpg");
+
+        String cadena = Environment.getExternalStorageDirectory().toString() + "/RhinoPacking" + "/" + codigo + "_" + nom + index + ".jpg";
+        FileInputStream read = new FileInputStream(cadena);
+
+        int size = read.available();
+        byte[] buffer = new byte[size];
+        read.read(buffer);
+        read.close();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(buffer, 0, buffer.length);
+        return bitmap;
+    }
+
+    Bitmap bitmapGuia;
     public boolean consultarGuias(String codigo)
     {
         mRegistrosGuias = new ArrayList<>();
         RegistroGuia registroGuia;
         ResultSet rs;
+        ResultSet rsGuia;
         Statement stm;
+        Statement stmGuia;
         try{
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT * FROM dbo.registros_guia WHERE codigo='"+codigo+"'");
+            rs = stm.executeQuery("SELECT id_guia FROM dbo.registros_guia WHERE codigo='"+codigo+"'");
 
             while(rs.next()){
-                byte[] bytes = rs.getBytes("foto");
-                index = rs.getInt("id_guia");
-                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                registroGuia = new RegistroGuia(index, codigo, bitmap);
+                indexGuia = rs.getInt("id_guia");
+
+
+
+                //LEER O GUARDAR
+                try
+                {
+                    bitmapGuia = getBitmapFromDir(codigo, "GUIA", indexGuia);
+                    Log.d("Shaka", "Imagen Guía leída desde memoria");
+
+                }
+                catch (Exception e)
+                {
+                    try
+                    {
+                        stmGuia = mConection.createStatement();
+                        rsGuia = stmGuia.executeQuery("SELECT foto FROM dbo.registros_paquete WHERE id_guia='"+indexGuia+"'");
+
+
+
+                        while(rsGuia.next())
+                        {
+                            byte[] bytes = rs.getBytes("foto");
+                            bitmapGuia = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                            guardarImagen(codigo, "GUIA", bitmapGuia, indexGuia);
+
+
+
+                            Log.d("Shaka", "Imagen Guía leída desde SQL");
+                        }
+
+                    }catch (Exception i)
+                    {
+                        Log.d("Shaka", "Error: " + i);
+                    }
+
+                }
+
+                registroGuia = new RegistroGuia(indexGuia, codigo, bitmapGuia);
                 mRegistrosGuias.add(registroGuia);
+
+
             }
 
             return true;
@@ -224,6 +328,7 @@ public class SQL {
 
     Bitmap bitmap;
     int index;
+    int indexGuia;
 
     public int getIndex() {
         return index;
@@ -240,6 +345,25 @@ public class SQL {
 
             while(rs.next()){
                 byte[] bytes = rs.getBytes("foto_recibido");
+                index = rs.getInt("id_registro");
+                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                return true;
+            }
+        }catch (Exception e){ Log.d("DEPURACION", "ERROR"); return false; }
+        return false;
+    }
+
+    public boolean downloadImagenEntrega(String codigo){
+        ResultSet rs;
+        Statement stm;
+        try
+        {
+            connect();
+            stm = mConection.createStatement();
+            rs = stm.executeQuery("SELECT id_registro, foto_entrega FROM dbo.registros WHERE codigo='"+codigo+"'");
+
+            while(rs.next()){
+                byte[] bytes = rs.getBytes("foto_entrega");
                 index = rs.getInt("id_registro");
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                 return true;

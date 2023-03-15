@@ -2,10 +2,13 @@ package com.rhinopacking.models;
 
 import android.graphics.Bitmap;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 
 public class Registro {
+
+
     public int getId_registro() {
         return id_registro;
     }
@@ -75,6 +78,24 @@ public class Registro {
         this.fecha_almacen = fecha_almacen;
         this.fecha_entrega = fecha_entrega;
         this.activo = activo;
+    }
+
+
+
+    public Registro(String codigo, String nombre, String telefono, float precio, boolean pagado, String status, String observaciones, Date fecha_almacen, Date fecha_entrega,  boolean activo, int metodo, int id_operador) {
+
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.precio = precio;
+        this.pagado = pagado;
+        this.status = status;
+        this.observaciones = observaciones;
+        this.fecha_almacen = fecha_almacen;
+        this.fecha_entrega = fecha_entrega;
+        this.activo = activo;
+        this.metodo = metodo;
+        this.id_operador = id_operador;
     }
 
     public int getMetodo() {
