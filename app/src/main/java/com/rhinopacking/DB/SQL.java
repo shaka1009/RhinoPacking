@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.rhinopacking.models.Operador;
 import com.rhinopacking.models.Registro;
+import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
 
 import java.io.ByteArrayOutputStream;
@@ -40,8 +41,8 @@ public class SQL {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.2:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.2:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("DEPURACION", "ERROR: " + e);}
@@ -63,6 +64,12 @@ public class SQL {
     }
 
     public List<RegistroPaquete> mRegistrosPaquetes;
+
+    public List<RegistroGuia> getmRegistrosGuias() {
+        return mRegistrosGuias;
+    }
+
+    public List<RegistroGuia> mRegistrosGuias;
 
     public List<Operador> getmOperadores() {
         return mOperadores;
@@ -177,12 +184,35 @@ public class SQL {
                 byte[] bytes = rs.getBytes("foto");
                 index = rs.getInt("id_paquete");
                 bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-
-
-
-
                 registroPaquete = new RegistroPaquete(index, codigo, rs.getInt("cantidad"), rs.getString("medidas"), bitmap);
                 mRegistrosPaquetes.add(registroPaquete);
+            }
+
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+
+    public boolean consultarGuias(String codigo)
+    {
+        mRegistrosGuias = new ArrayList<>();
+        RegistroGuia registroGuia;
+        ResultSet rs;
+        Statement stm;
+        try{
+            connect();
+
+            stm = mConection.createStatement();
+            rs = stm.executeQuery("SELECT * FROM dbo.registros_guia WHERE codigo='"+codigo+"'");
+
+            while(rs.next()){
+                byte[] bytes = rs.getBytes("foto");
+                index = rs.getInt("id_guia");
+                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                registroGuia = new RegistroGuia(index, codigo, bitmap);
+                mRegistrosGuias.add(registroGuia);
             }
 
             return true;
@@ -243,7 +273,7 @@ public class SQL {
     }
 
 
-    public boolean addRegistro(Registro registro, List<RegistroPaquete> paquetes){
+    public boolean addRegistro(Registro registro, List<RegistroPaquete> paquetes, List<RegistroGuia> guias){
 
         ResultSet rs;
         Statement stm;
@@ -257,6 +287,13 @@ public class SQL {
         {
             for (int i=0;i<paquetes.size();i++) {
                 if(!insertarDatosPaquete(registro.getCodigo(), paquetes.get(i)))
+                {
+                    return false;
+                }
+            }
+
+            for (int i=0;i<guias.size();i++) {
+                if(!insertarDatosGuia(registro.getCodigo(), guias.get(i)))
                 {
                     return false;
                 }
@@ -295,6 +332,33 @@ public class SQL {
 
             String query = "INSERT INTO [RhinoPacking].[dbo].[registros_paquete] ([codigo], [cantidad], [medidas], [foto]) " +
                     "VALUES ('"+codigo+"', '"+registroPaquete.getCantidad()+"', '"+registroPaquete.getMedidas()+"',?)";
+
+            PreparedStatement preparedStatement = mConection.prepareStatement(query);
+            preparedStatement.setBytes(1, bytesImage1);
+
+            preparedStatement.execute();
+
+            return true;
+        }catch (Exception e){ Log.d("DEPURACION", "Error: " + e); return false;}
+    }
+
+    public  boolean insertarDatosGuia(String codigo, RegistroGuia registroGuia){
+
+        ResultSet rs;
+        Statement stm;
+
+
+        try{
+
+            connect();
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            Bitmap bitmap2 = registroGuia.getFoto();
+            bitmap2.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] bytesImage1 = byteArrayOutputStream.toByteArray();
+
+            String query = "INSERT INTO [RhinoPacking].[dbo].[registros_guia] ([codigo], [foto]) " +
+                    "VALUES ('"+codigo+"',?)";
 
             PreparedStatement preparedStatement = mConection.prepareStatement(query);
             preparedStatement.setBytes(1, bytesImage1);

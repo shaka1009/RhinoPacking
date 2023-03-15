@@ -28,12 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.rhinopacking.DB.SQL;
+import com.rhinopacking.adapters.RegistroGuiasListAdapter;
 import com.rhinopacking.adapters.RegistroPaquetesListAdapter;
 import com.rhinopacking.includes.PopupEliminar;
 import com.rhinopacking.includes.PopupError;
 import com.rhinopacking.includes.PopupMostrarFoto;
 import com.rhinopacking.includes.Toolbar;
 import com.rhinopacking.models.Registro;
+import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
 
 import org.jetbrains.annotations.NotNull;
@@ -63,9 +65,12 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
     LinearLayout llSinPagar, llEfectivo, llTransferencia, llObservaciones, llCortesia;
 
-    public static List<RegistroPaquete> mRegistrosPaquetes;
+    List<RegistroPaquete> mRegistrosPaquetes;
+    List<RegistroGuia> mRegistrosGuias;
     RegistroPaquetesListAdapter registrosPaqueteListAdapter;
+    RegistroGuiasListAdapter registrosGuiaListAdapter;
     private RecyclerView mRecyclerPaquetes;
+    private RecyclerView mRecyclerGuias;
 
     Button btnChangeStatus, btnFinalizar;
 
@@ -131,7 +136,9 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         etObservaciones = findViewById(R.id.etObservaciones);
 
         mRegistrosPaquetes = new ArrayList<>();
+        mRegistrosGuias = new ArrayList<>();
         mRecyclerPaquetes = findViewById(R.id.rvPaquetes);
+        mRecyclerGuias = findViewById(R.id.rvGuias);
 
         btnChangeStatus = findViewById(R.id.btnChangeStatus);
 
@@ -266,6 +273,48 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
 
                         mPopupMostrarFoto.setPopupFoto(mRegistrosPaquetes.get(position).getFoto());
+
+
+
+                        return true;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NotNull RecyclerView recyclerView, @NotNull MotionEvent motionEvent) {
+
+            }
+        });
+
+
+        mRecyclerGuias.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean b) {
+
+            }
+
+            final GestureDetector mGestureDetector = new GestureDetector(HomeRegistrosDetalles.this, new GestureDetector.SimpleOnGestureListener() {
+                @Override public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+            });
+
+            @Override
+            public boolean onInterceptTouchEvent(@NotNull RecyclerView recyclerView, @NotNull MotionEvent motionEvent) {
+                try {
+                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+
+                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+
+                        int position = recyclerView.getChildAdapterPosition(child);
+
+
+                        mPopupMostrarFoto.setPopupFoto(mRegistrosGuias.get(position).getFoto());
 
 
 
@@ -487,12 +536,29 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
                     runOnUiThread(() -> {
                         registrosPaqueteListAdapter = new RegistroPaquetesListAdapter(mRegistrosPaquetes, this);
-
                         mRecyclerPaquetes.setHasFixedSize(true);
                         mRecyclerPaquetes.setLayoutManager(new LinearLayoutManager(this));
                         mRecyclerPaquetes.setAdapter(registrosPaqueteListAdapter);
                     });
                 }
+
+
+
+            }).start();
+
+            new Thread(() -> {
+                if(mSql.consultarGuias(codigo))
+                {
+                    mRegistrosGuias = mSql.getmRegistrosGuias();
+
+                    runOnUiThread(() -> {
+                        registrosGuiaListAdapter = new RegistroGuiasListAdapter(mRegistrosGuias, this);
+                        mRecyclerGuias.setHasFixedSize(true);
+                        mRecyclerGuias.setLayoutManager(new LinearLayoutManager(this));
+                        mRecyclerGuias.setAdapter(registrosGuiaListAdapter);
+                    });
+                }
+
             }).start();
         }).start();
 

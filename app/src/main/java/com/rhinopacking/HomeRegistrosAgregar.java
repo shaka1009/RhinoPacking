@@ -37,12 +37,14 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.github.dhaval2404.imagepicker.constant.ImageProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rhinopacking.DB.SQL;
+import com.rhinopacking.adapters.RegistroGuiasListAdapter;
 import com.rhinopacking.adapters.RegistroPaquetesListAdapter;
 import com.rhinopacking.includes.PopupError;
 import com.rhinopacking.includes.PopupMostrarFoto;
 import com.rhinopacking.includes.SnackbarError;
 import com.rhinopacking.includes.Toolbar;
 import com.rhinopacking.models.Registro;
+import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
 
 import java.io.File;
@@ -53,6 +55,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HomeRegistrosAgregar extends AppCompatActivity {
+
+
+
+    RegistroPaquetesListAdapter registrosPaqueteListAdapter;
+
+    RegistroGuiasListAdapter registrosGuiaListAdapter;
+
 
 
     private boolean pressButton = false;
@@ -69,7 +78,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
     ImageView ciFotoBodega;
 
-    ImageButton ibAddPaquete;
+    ImageButton ibAddPaquete, ibAddGuia;
 
     String codigo;
 
@@ -78,8 +87,10 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
     Bundle extras;
 
     private RecyclerView mRecyclerPaquetes;
+    private RecyclerView mRecyclerGuias;
 
     public static List<RegistroPaquete> mRegistrosPaquetes;
+    public static List<RegistroGuia> mRegistrosGuias;
 
     private CoordinatorLayout snackbar;
     SnackbarError snackbarError;
@@ -143,12 +154,19 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
 
         mRegistrosPaquetes = new ArrayList<>();
+        mRegistrosGuias = new ArrayList<>();
+
         mRecyclerPaquetes = findViewById(R.id.rvPaquetes);
+        mRecyclerGuias = findViewById(R.id.rvGuias);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerPaquetes.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(this);
+        mRecyclerGuias.setLayoutManager(linearLayoutManager1);
 
         btnAgregarRegistro = findViewById(R.id.btnAgregarRegistro);
+
+        ibAddGuia = findViewById(R.id.ibAddGuia);
 
         //barras de error
         mPopupError = new PopupError(this, getApplicationContext(), findViewById(R.id.popupError));
@@ -236,6 +254,10 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
             someActivityResultLauncher.launch(intent);
         });
 
+        ibAddGuia.setOnClickListener(v->{
+            PickImageGuias();
+        });
+
         btnAgregarRegistro.setOnClickListener(v->{
 
             if(pressButton)
@@ -300,19 +322,16 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                     Registro registro = new Registro(codigo, etNombre.getText().toString(), etTelefono.getText().toString(), precio, !rbSinPagar.isChecked(), metodo, "EN_BODEGA", etObservaciones.getText().toString(), bitmap);
 
 
-
-
-                    if(mSql.addRegistro(registro, mRegistrosPaquetes))
+                    if(mSql.addRegistro(registro, mRegistrosPaquetes, mRegistrosGuias))
                     {
-
-                        runOnUiThread(() -> {
-                            Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_SHORT).show();
-                        });
-
                         saveImagen(bitmap);
 
                         Intent resultIntent = new Intent();
                         setResult(RESULT_OK, resultIntent);
+
+                        runOnUiThread(() -> {
+                            Toast.makeText(this, "Registro exitoso.", Toast.LENGTH_SHORT).show();
+                        });
 
                         finish();
                     }
@@ -342,34 +361,64 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                 .cropSquare()
                 .maxResultSize(Home.RESOLUCION,Home.RESOLUCION)
                 .provider(ImageProvider.BOTH) //Or bothCameraGallery()
-                .start();
+                .createIntent(intent ->{
+                    foto_bodega.launch(intent);
+                    return null;
+                });
+                //.start();
     }
 
-    ActivityResultLauncher<Intent> camaraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
-        @Override
-        public void onActivityResult(ActivityResult result) {
-            if (result.getResultCode() == RESULT_OK) {
-                //ARCHIVO
+    private void PickImageGuias() {
+        ImagePicker.Companion.with(HomeRegistrosAgregar.this)
+                .crop()
+                .cropSquare()
+                .maxResultSize(Home.RESOLUCION,Home.RESOLUCION)
+                .provider(ImageProvider.BOTH) //Or bothCameraGallery()
+                .createIntent(intent ->{
+                    foto_guia.launch(intent);
+                    return null;
+                });
+        //.start();
+    }
 
-                extras = result.getData().getExtras();
-                bitmap = (Bitmap) extras.get("data");
-                ciFotoBodega.setImageBitmap(bitmap);
+    ActivityResultLauncher<Intent> foto_guia = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Uri uri=result.getData().getData();
+                    //imageView.setImageURI(uri);
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+                        //ciFotoBodega.setImageBitmap(bitmap);
 
 
-                try {
-                    FileOutputStream fos = openFileOutput(crearNombreArchivoJPG(codigo), Context.MODE_PRIVATE);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                    fos.close();
-                }catch (Exception e){
-                    Toast.makeText(HomeRegistrosAgregar.this, "ERROR ON RESULT", Toast.LENGTH_SHORT).show();
+
+
+                        RegistroGuia registroGuia = new RegistroGuia(codigo, bitmap);
+                        mRegistrosGuias.add(registroGuia);
+
+
+                        registrosGuiaListAdapter = new RegistroGuiasListAdapter(mRegistrosGuias, this);
+
+                        registrosGuiaListAdapter.setOnItemClickListener(new RegistroGuiasListAdapter.OnItemClickListener() {
+                            @Override
+                            public void onDeleteClick(int position) {
+                                removeItemGuias(position);
+                            }
+                        });
+
+                        mRecyclerGuias.setHasFixedSize(true);
+                        mRecyclerGuias.setLayoutManager(new LinearLayoutManager(this));
+                        mRecyclerGuias.setAdapter(registrosGuiaListAdapter);
+
+                        Toast.makeText(this, "Total: " + mRegistrosGuias.size(), Toast.LENGTH_SHORT).show();
+                    }catch (Exception e) {}
+
+                    SleepButton();
                 }
-                SleepButton();
-            }
-            else
-                SleepButton();
-        }
-    });
+            });
 
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -377,21 +426,23 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
             Uri uri=data.getData();
             //imageView.setImageURI(uri);
 
+
+
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
                 ciFotoBodega.setImageBitmap(bitmap);
-
             }catch (Exception e) {}
+
+
+
 
             SleepButton();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
             SleepButton();
         } else {
-            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
             SleepButton();
         }
-    }
+    }*/
 
     private void saveImagen(Bitmap bitmap)
     {
@@ -444,7 +495,6 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
 
 
-    RegistroPaquetesListAdapter registrosPaqueteListAdapter;
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -459,10 +509,6 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
-                    //Intent intent = getIntent();
-                    ///Bitmap bitmap2 = (Bitmap) intent.getParcelableExtra("BitmapImage");
-
 
 
                     RegistroPaquete registroPaquete = new RegistroPaquete(codigo, Integer.parseInt(data.getStringExtra("cantidad")), data.getStringExtra("medidas") ,  bitmap2);
@@ -486,10 +532,31 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
 
 
+    ActivityResultLauncher<Intent> foto_bodega = registerForActivityResult(
+        new ActivityResultContracts.StartActivityForResult(),
+        result -> {
+            if (result.getResultCode() == Activity.RESULT_OK) {
+                Uri uri=result.getData().getData();
+                //imageView.setImageURI(uri);
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+                    ciFotoBodega.setImageBitmap(bitmap);
+                }catch (Exception e) {}
+
+                SleepButton();
+            }
+        });
+
     public void removeItem(int position) {
         mRegistrosPaquetes.remove(position);
         registrosPaqueteListAdapter.notifyItemRemoved(position);
         mRecyclerPaquetes.setHasFixedSize(true);
+    }
+
+    public void removeItemGuias(int position) {
+        mRegistrosGuias.remove(position);
+        registrosGuiaListAdapter.notifyItemRemoved(position);
+        mRecyclerGuias.setHasFixedSize(true);
     }
 
 
