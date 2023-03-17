@@ -3,7 +3,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:showIn="navigation_view">
 
-   <!-- <group
+   <group
         android:id="@+id/menu_top"
         android:checkableBehavior="single">
         <item
@@ -12,20 +12,20 @@
 
 
     </group>
+    <!--
+       <group
+           android:id="@+id/menu_mid"
+           android:checkableBehavior="single">
+           <item
+               android:id="@+id/menu_zetapremia"
+               android:title="@string/perfil" />
 
-    <group
-        android:id="@+id/menu_mid"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/menu_zetapremia"
-            android:title="@string/perfil" />
+           <item
+               android:id="@+id/menu_sucursales"
+               android:title="@string/perfil" />
 
-        <item
-            android:id="@+id/menu_sucursales"
-            android:title="@string/perfil" />
-
-    </group>
--->
+       </group>
+   -->
     <group
         android:id="@+id/menu_bottom"
         android:checkableBehavior="none">

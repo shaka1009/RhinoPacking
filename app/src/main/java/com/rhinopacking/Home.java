@@ -389,16 +389,18 @@ public class Home extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId())
             {
-                /*
+
                 case R.id.menu_perfil:
                     if(pressButton)
                         break;
                     else pressButton = true;
 
-                    SleepButton();
-                    break;
+                    startActivity(new Intent(Home.this, HomePerfil.class));
 
-*/
+                    SleepButton();
+                break;
+
+
 
 
 

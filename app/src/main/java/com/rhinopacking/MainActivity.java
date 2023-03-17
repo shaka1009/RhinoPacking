@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         if(mAuthProvider.existSession())
         {
             startActivity(new Intent(MainActivity.this, Home.class));
-            //startActivity(new Intent(MainActivity.this, HomeTabulador.class));
+            //startActivity(new Intent(MainActivity.this, HomePerfil.class));
             finish();
         }
         else

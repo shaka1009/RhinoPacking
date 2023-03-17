@@ -46,7 +46,7 @@ public class PopupCerrarSesion {
     public void setPopupCerrarSesion(String nombre)
     {
 
-        tvPopupCerrarSesion.setText(nombre + ", estás a punto de cerrar la sesión en la aplicación de Rhino Paking.");
+        tvPopupCerrarSesion.setText(nombre + ", estás a punto de cerrar la sesión en la aplicación de Rhino Packing.");
 
 
         popupCerrarSesionCancelar.setOnClickListener(v -> popupCerrarSesion.dismiss());
