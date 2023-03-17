@@ -247,6 +247,8 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
             PickImage();
             //camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+
+            SleepButton();
         });
 
         ibAddPaquete.setOnClickListener(v->{
@@ -543,7 +545,6 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                     ciFotoBodega.setImageBitmap(bitmap);
                 }catch (Exception e) {}
 
-                SleepButton();
             }
         });
 

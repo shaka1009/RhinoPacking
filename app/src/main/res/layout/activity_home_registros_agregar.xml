@@ -163,7 +163,8 @@
                             android:inputType="phone"
                             android:gravity="left|center"
                             android:singleLine="true"
-                            android:ellipsize = "end"/>
+                            android:ellipsize = "end"
+                            android:visibility="gone"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

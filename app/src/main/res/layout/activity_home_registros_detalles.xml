@@ -16,12 +16,14 @@
 
 
     <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,51 +40,6 @@
                 android:layout_marginEnd="5dp"
                 android:gravity="center"
                 android:layout_gravity="right">
-                <TextView
-                    android:id="@+id/tvAlertaFinalizado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:drawableStart="@drawable/ic_finalizado"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone" />
-                <TextView
-                    android:id="@+id/tvAlertaCamino"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:drawableStart="@drawable/ic_camino"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone" />
-                <TextView
-                    android:id="@+id/tvAlertaBodega"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:drawableStart="@drawable/ic_bodega"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone" />
-                <TextView
-                    android:id="@+id/tvAlertaDeuda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone"
-                    android:drawableStart="@drawable/ic_deuda"/>
-                <TextView
-                    android:id="@+id/tvAlertaIncompleta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone"
-                    android:drawableStart="@drawable/ic_incompleta"/>
                 <TextView
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
@@ -216,7 +173,8 @@
                             android:gravity="left|center"
                             android:singleLine="true"
                             android:ellipsize = "end"
-                            android:enabled="true" />
+                            android:enabled="true"
+                            android:visibility="gone"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -637,7 +595,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Paquetes"
+                        android:text="@string/paquetes"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginStart="5dp"
@@ -677,7 +635,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Guías (Opcional)"
+                        android:text="@string/guias_opcional"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginStart="5dp"
@@ -725,7 +683,7 @@
                 android:fontFamily="@font/open_sans_semibold"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Asignar Operador"
+                android:text="@string/asignar_operador"
                 android:textAllCaps="false"
                 android:textColor="#FFF"
                 android:textSize="18sp"
@@ -746,7 +704,7 @@
                 android:fontFamily="@font/open_sans_semibold"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Finalizar Servicio"
+                android:text="@string/finalizar_servicio"
                 android:textAllCaps="false"
                 android:textColor="#FFF"
                 android:textSize="18sp"
@@ -765,7 +723,34 @@
     </ScrollView>
 
 
+    <LinearLayout
+        android:id="@+id/linearlayoutLoad"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:gravity="center">
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/black"
+            android:progress="100"
+            android:progressTint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cargando"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
 
 

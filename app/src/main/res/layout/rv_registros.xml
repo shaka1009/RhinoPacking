@@ -112,51 +112,6 @@
                 android:layout_marginEnd="5dp"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/tvAlertaFinalizado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:drawableStart="@drawable/ic_finalizado"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone" />
-                <TextView
-                    android:id="@+id/tvAlertaCamino"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:drawableStart="@drawable/ic_camino"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone" />
-                <TextView
-                    android:id="@+id/tvAlertaBodega"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:drawableStart="@drawable/ic_bodega"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone" />
-                <TextView
-                    android:id="@+id/tvAlertaDeuda"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone"
-                    android:drawableStart="@drawable/ic_deuda"/>
-                <TextView
-                    android:id="@+id/tvAlertaIncompleta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:gravity="center"
-                    android:layout_marginEnd="5dp"
-                    android:visibility="gone"
-                    android:drawableStart="@drawable/ic_incompleta"/>
-                <TextView
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

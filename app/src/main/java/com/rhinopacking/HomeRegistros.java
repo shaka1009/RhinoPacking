@@ -441,8 +441,15 @@ public class HomeRegistros extends AppCompatActivity {
 
                     if(isConnected())
                     {
-                        mRegistrosTemp = mRegistros;
-                        mostrarAdapter(mRegistros);
+
+                        mRegistrosTemp = new ArrayList<>();
+
+                        for (int x=0;x<mRegistros.size();x++)
+                        {
+                            if(mRegistros.get(x).isActivo())
+                                mRegistrosTemp.add(mRegistros.get(x));
+                        }
+                        mostrarAdapter(mRegistrosTemp);
                     }
 
                     else {
@@ -609,13 +616,11 @@ public class HomeRegistros extends AppCompatActivity {
                         mRegistrosTemp = new ArrayList<>();
 
                         for (int x=0;x<mRegistros.size();x++) {
-                            if(mRegistros.get(x).isActivo() && mRegistros.get(x).getPrecio()==0 || mRegistros.get(x).getTelefono().equals("")  && mRegistros.get(x).isActivo())
+                            if(mRegistros.get(x).isActivo() && mRegistros.get(x).getPrecio()==0 && mRegistros.get(x).isActivo())
                                 mRegistrosTemp.add(mRegistros.get(x));
                         }
                         mostrarAdapter(mRegistrosTemp);
                     }
-
-
                     else {
                         runOnUiThread(() -> {
                             snackbarError.show("No hay conexión a internet.");

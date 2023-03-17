@@ -389,6 +389,7 @@ public class Home extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             switch (item.getItemId())
             {
+                /*
                 case R.id.menu_perfil:
                     if(pressButton)
                         break;
@@ -397,7 +398,7 @@ public class Home extends AppCompatActivity {
                     SleepButton();
                     break;
 
-
+*/
 
 
 

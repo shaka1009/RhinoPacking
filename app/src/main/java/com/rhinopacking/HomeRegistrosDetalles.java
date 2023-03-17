@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +66,6 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
     SQL mSql;
 
     TextView tvStatus;
-    TextView tvAlertaFinalizado, tvAlertaCamino, tvAlertaBodega, tvAlertaDeuda, tvAlertaIncompleta;
 
     TextView tvCodigo, tvSemana, tvFechaBodega, tvFechaEntrega;
 
@@ -73,7 +73,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
     EditText etNombre, etTelefono, etCosto, etObservaciones, etNombreOperador;
 
-    LinearLayout llSinPagar, llEfectivo, llTransferencia, llObservaciones, llCortesia;
+    LinearLayout linearlayoutLoad, llSinPagar, llEfectivo, llTransferencia, llObservaciones, llCortesia;
 
     List<RegistroPaquete> mRegistrosPaquetes;
     List<RegistroGuia> mRegistrosGuias;
@@ -92,6 +92,8 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
     PopupMostrarFoto mPopupMostrarFoto;
 
     private PopupError mPopupError;
+
+    ScrollView scrollview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +121,8 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         bitmap = null;
 
         mPopup = new PopupEliminar(this, getApplicationContext(), findViewById(R.id.popupEliminar));
+        scrollview = findViewById(R.id.scrollview);
 
-        tvAlertaFinalizado = findViewById(R.id.tvAlertaFinalizado);
-        tvAlertaCamino = findViewById(R.id.tvAlertaCamino);
-        tvAlertaBodega = findViewById(R.id.tvAlertaBodega);
-        tvAlertaDeuda = findViewById(R.id.tvAlertaDeuda);
-        tvAlertaIncompleta = findViewById(R.id.tvAlertaIncompleta);
 
         tvStatus = findViewById(R.id.tvStatus);
 
@@ -140,6 +138,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         etTelefono = findViewById(R.id.etTelefono);
         etCosto = findViewById(R.id.etCosto);
 
+        linearlayoutLoad = findViewById(R.id.linearlayoutLoad);
         llSinPagar = findViewById(R.id.llSinPagar);
         llEfectivo = findViewById(R.id.llEfectivo);
         llTransferencia = findViewById(R.id.llTransferencia);
@@ -530,13 +529,15 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                 }).start();
 
 
-
-
-
+                runOnUiThread(() -> {
+                    linearlayoutLoad.setVisibility(View.GONE);
+                    scrollview.setVisibility(View.VISIBLE);
+                });
             }
             else {
                 runOnUiThread(() -> {
                     Toast.makeText(this, "Error de conexión.", Toast.LENGTH_SHORT).show();
+                    finish();
                 });
             }
 
@@ -737,61 +738,63 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
     private void leerStatus(){
         new Thread(() -> {
 
-            String status = "";
 
-            if(registro.getStatus().equals("FINALIZADO"))
+            if(!registro.isActivo())
             {
-                status = "Finalizado";
-                if(registro.isPagado()){
-                    runOnUiThread(() -> {
-                        tvAlertaFinalizado.setVisibility(View.VISIBLE);
-                    });
-                }
-            }
-            else if(registro.getStatus().equals("EN_CAMINO"))
-            {
-                status = "En Camino";
-                if(registro.isPagado()){
-
-                    runOnUiThread(() -> {
-                        tvAlertaCamino.setVisibility(View.VISIBLE);
-                    });
-                }
-            }
-            else if(registro.getStatus().equals("EN_BODEGA"))
-            {
-                status = "En Bodega";
-
-                if(registro.getPrecio()==0 || registro.getTelefono().equals(""))
-                {
-                    status = status + "\nIncompleto";
-                    runOnUiThread(() -> {
-
-                        tvAlertaIncompleta.setVisibility(View.VISIBLE);
-                    });
-
-                }
-                else if(registro.isPagado())
-                {
-                    runOnUiThread(() -> {
-                        tvAlertaBodega.setVisibility(View.VISIBLE);
-                    });
-                }
-            }
-
-
-
-
-            if(!registro.isPagado() && registro.getPrecio()!=0 && !registro.getTelefono().equals("")){
-                status = status + "\nDebe";
                 runOnUiThread(() -> {
+                    tvStatus.setText("Eliminado");
+                    tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_incompleta, 0, 0, 0);
+                });
 
-                    tvAlertaDeuda.setVisibility(View.VISIBLE);
+            }
+            else if(registro.getStatus().equals("FINALIZADO") && registro.getMetodo()!=0)
+            {
+                runOnUiThread(() -> {
+                    tvStatus.setText("Finalizado");
+                    tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_finalizado, 0, 0, 0);
+                });
+
+            }
+            else if(registro.getStatus().equals("FINALIZADO") && registro.getMetodo()==0)
+            {
+                runOnUiThread(() -> {
+                    tvStatus.setText("Finalizado\nDebe");
+                    tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_deuda, 0, 0, 0);
+                });
+
+            }
+
+            else if(registro.getStatus().equals("EN_CAMINO") && registro.getMetodo()!=0)
+            {
+                runOnUiThread(() -> {
+                    tvStatus.setText("En Camino");
+                    tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_camino, 0, 0, 0);
+                });
+
+            }
+            else if(registro.getStatus().equals("EN_CAMINO") && registro.getMetodo()==0)
+            {
+                runOnUiThread(() -> {
+                    tvStatus.setText("En Camino\nDebe");
+                    tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_deuda, 0, 0, 0);
                 });
             }
 
-            String finalStatus = status;
-            runOnUiThread(() -> tvStatus.setText(finalStatus));
+            else if(registro.getStatus().equals("EN_BODEGA") && registro.getMetodo()!=0)
+            {
+                runOnUiThread(() -> {
+                    tvStatus.setText("En Bodega");
+                    tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bodega, 0, 0, 0);
+                });
+
+            }
+            else if(registro.getStatus().equals("EN_BODEGA") && registro.getMetodo()==0)
+            {
+                runOnUiThread(() -> {
+                    tvStatus.setText("En Bodega\nDebe");
+                    tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_deuda, 0, 0, 0);
+                });
+            }
         }).start();
     }
 

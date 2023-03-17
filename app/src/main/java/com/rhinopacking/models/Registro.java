@@ -98,6 +98,22 @@ public class Registro {
         this.id_operador = id_operador;
     }
 
+    public Registro(String codigo, String nombre, float precio, String status, Date fecha_almacen,  boolean activo, int metodo) {
+
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.precio = precio;
+        this.pagado = pagado;
+        this.status = status;
+        this.observaciones = observaciones;
+        this.fecha_almacen = fecha_almacen;
+        this.fecha_entrega = fecha_entrega;
+        this.activo = activo;
+        this.metodo = metodo;
+        this.id_operador = id_operador;
+    }
+
     public int getMetodo() {
         return metodo;
     }
@@ -144,6 +160,7 @@ public class Registro {
         this.status = status;
         this.observaciones = observaciones;
     }
+
 
 
 
@@ -218,9 +235,6 @@ public class Registro {
     }
 
     public Registro(String codigo, String nombre, String status, boolean pagado, Date fecha_recibio, boolean activo, float precio, String telefono, int id_operador) {
-
-
-        //foto_recibido = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         this.codigo = codigo;
         this.nombre = nombre;
         this.status = status;

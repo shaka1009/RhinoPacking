@@ -54,7 +54,7 @@ public class RegistroListAdapter extends RecyclerView.Adapter<RegistroListAdapte
         return new ViewHolder(view);
     }
 
-    @Override public void onBindViewHolder(final ViewHolder holder, final int position)
+    @Override public void onBindViewHolder(ViewHolder holder, int position)
     {
         holder.bindData(mData.get(position));
     }
@@ -81,79 +81,69 @@ public class RegistroListAdapter extends RecyclerView.Adapter<RegistroListAdapte
             tvSemana = itemView.findViewById(R.id.tvSemana);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             fotoAlmacen = itemView.findViewById(R.id.fotoRecibido);
-            tvAlertaFinalizado = itemView.findViewById(R.id.tvAlertaFinalizado);
-            tvAlertaCamino = itemView.findViewById(R.id.tvAlertaCamino);
-            tvAlertaBodega = itemView.findViewById(R.id.tvAlertaBodega);
-            tvAlertaDeuda = itemView.findViewById(R.id.tvAlertaDeuda);
-            tvAlertaIncompleta = itemView.findViewById(R.id.tvAlertaIncompleta);
         }
-        void bindData(final Registro item)
+        void bindData(Registro item)
         {
+            Log.d("Shaka", "Código: " + item.getCodigo() + " Nombre: " + item.getNombre() + " Semana: " + item.getSemana() + " Status: " + item.getStatus() + " Metodo: " + item.getMetodo());
             SQL mSql = new SQL();
+            String status = "";
+
+
             tvCodigo.setText(item.getCodigo());
             tvNombre.setText("Nombre: " + item.getNombre());
             tvSemana.setText("Semana: " +  item.getSemana());
 
-            new Thread(() -> {
-
-                String status = "";
-
-                if(item.getStatus().equals("FINALIZADO"))
-                {
-                    status = "Finalizado";
-                    if(item.isPagado()){
-                        ((Activity) context).runOnUiThread(() -> {
-                            tvAlertaFinalizado.setVisibility(View.VISIBLE);
-                        });
-                    }
-                }
-                else if(item.getStatus().equals("EN_CAMINO"))
-                {
-                    status = "En Camino";
-                    if(item.isPagado()){
-
-                        ((Activity) context).runOnUiThread(() -> {
-                            tvAlertaCamino.setVisibility(View.VISIBLE);
-                        });
-                    }
-                }
-                else if(item.getStatus().equals("EN_BODEGA"))
-                {
-                    status = "En Bodega";
-
-                    if(item.getPrecio()==0 || item.getTelefono().equals(""))
-                    {
-                        status = status + "\nIncompleto";
-                        ((Activity) context).runOnUiThread(() -> {
-
-                            tvAlertaIncompleta.setVisibility(View.VISIBLE);
-                        });
-
-                    }
-                    else if(item.isPagado())
-                    {
-                        ((Activity) context).runOnUiThread(() -> {
-                            tvAlertaBodega.setVisibility(View.VISIBLE);
-                        });
-                    }
-                }
 
 
+            if(!item.isActivo())
+            {
+                tvStatus.setText("Eliminado");
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_incompleta, 0, 0, 0);
+            }
+            else if(item.getStatus().equals("FINALIZADO") && item.getMetodo()!=0)
+            {
+                status = "Finalizado";
+                tvStatus.setText(status);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_finalizado, 0, 0, 0);
+            }
+            else if(item.getStatus().equals("FINALIZADO") && item.getMetodo()==0)
+            {
+                status = "Finalizado\nDebe";
+                tvStatus.setText(status);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_deuda, 0, 0, 0);
+            }
+
+            else if(item.getStatus().equals("EN_CAMINO") && item.getMetodo()!=0)
+            {
+                status = "En Camino";
+                tvStatus.setText(status);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_camino, 0, 0, 0);
+            }
+            else if(item.getStatus().equals("EN_CAMINO") && item.getMetodo()==0)
+            {
+                status = "En Camino\nDebe";
+                tvStatus.setText(status);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_deuda, 0, 0, 0);
+            }
+
+            else if(item.getStatus().equals("EN_BODEGA") && item.getMetodo()!=0)
+            {
+                status = "En Bodega";
+                tvStatus.setText(status);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_bodega, 0, 0, 0);
+            }
+            else if(item.getStatus().equals("EN_BODEGA") && item.getMetodo()==0)
+            {
+                status = "En Bodega\nDebe";
+                tvStatus.setText(status);
+                tvStatus.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_deuda, 0, 0, 0);
+            }
 
 
-                if(!item.isPagado() && item.getPrecio()!=0 && !item.getTelefono().equals("")){
-                    status = status + "\nDebe";
-                    ((Activity) context).runOnUiThread(() -> {
 
-                        tvAlertaDeuda.setVisibility(View.VISIBLE);
-                    });
-                }
 
-                String finalStatus = status;
-                ((Activity) context).runOnUiThread(() -> {
-                    tvStatus.setText(finalStatus);
-                });
-            }).start();
+
+
 
 
             new Thread(() -> {

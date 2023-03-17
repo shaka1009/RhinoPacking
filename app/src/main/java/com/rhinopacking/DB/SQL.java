@@ -29,10 +29,10 @@ public class SQL {
     private Connection mConection=null;
 
 
-    private final static String ip = "20.164.38.146";
+    private final static String ip = "34.174.171.223";
     private final static String puerto = "1433";
-    private final static String user = "sa";
-    private final static String password = "jeenmage12A";
+    private final static String user = "sqlserver";
+    private final static String password = "sqlmagage10";
     private final static String dbName = "RhinoPacking";
     private final static String extras = "";
 
@@ -47,8 +47,9 @@ public class SQL {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.2:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
+
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.2:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("DEPURACION", "ERROR: " + e);}
@@ -97,15 +98,18 @@ public class SQL {
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT * FROM dbo.registros");
+            rs = stm.executeQuery("SELECT codigo, nombre, precio, status, fecha_almacen, activo, metodo_pago FROM dbo.registros");
 
             while(rs.next()){
-                registro = new Registro(rs.getString("codigo"), rs.getString("nombre"), rs.getString("status"),rs.getBoolean("pagado"), rs.getDate("fecha_almacen"), rs.getBoolean("activo"), rs.getFloat("precio"), rs.getString("telefono"), rs.getInt("id_operador"));
+                registro = new Registro(rs.getString("codigo"), rs.getString("nombre"), rs.getFloat("precio"), rs.getString("status")
+                        , rs.getTimestamp("fecha_almacen"), rs.getBoolean("activo"), rs.getInt("metodo_pago"));
                 mRegistros.add(registro);
+
             }
 
             return true;
         }catch (Exception e){
+            Log.d("Shaka", "Error: " + e);
             return false;
         }
     }
@@ -130,12 +134,12 @@ public class SQL {
             while(rs.next()){
                 registro = new Registro(rs.getString("codigo"), rs.getString("nombre"), rs.getString("telefono"), rs.getFloat("precio"), rs.getBoolean("pagado"), rs.getString("status")
                         ,rs.getString("observaciones"), rs.getTimestamp("fecha_almacen"), rs.getTimestamp("fecha_entrega"), rs.getBoolean("activo"), rs.getInt("metodo_pago"), rs.getInt("id_operador"));
-
                 return true;
             }
-
+            Log.d("Shaka", "ERROR");
             return false;
         }catch (Exception e){
+            Log.d("Shaka", "ERROR" + e);
             return false;
         }
     }
@@ -514,7 +518,7 @@ public class SQL {
             stm = mConection.createStatement();
             //stm = mConection.prepareStatement("SELECT * FROM dbo.usuarios")
 
-            rs = stm.executeQuery("SELECT * FROM dbo.usuarios");
+            rs = stm.executeQuery("SELECT id_usuario, nombre, telefono FROM dbo.usuarios");
 
             while(rs.next()){
                 operador = new Operador(rs.getInt("id_usuario"), rs.getString("nombre"), rs.getString("telefono"));
@@ -553,7 +557,7 @@ public class SQL {
         {
             connect();
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT * FROM dbo.usuarios WHERE dbo.usuarios.id_usuario = '"+id_usuario+"'");
+            rs = stm.executeQuery("SELECT nombre FROM dbo.usuarios WHERE dbo.usuarios.id_usuario = '"+id_usuario+"'");
 
 
             rs.next();
