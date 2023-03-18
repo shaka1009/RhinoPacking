@@ -646,7 +646,18 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvGuias"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:visibility="gone"/>
+
+                    <GridView
+                        android:id="@+id/gvGuias"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:numColumns="auto_fit"
+                        android:horizontalSpacing="10dp"
+                        android:verticalSpacing="10dp"
+                        android:gravity="center"
+                        android:stretchMode="columnWidth" />
 
 
 

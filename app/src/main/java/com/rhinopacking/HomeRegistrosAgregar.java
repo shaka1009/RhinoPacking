@@ -37,6 +37,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.github.dhaval2404.imagepicker.constant.ImageProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rhinopacking.DB.SQL;
+import com.rhinopacking.adapters.RegistroGuiasGridAdapter;
 import com.rhinopacking.adapters.RegistroGuiasListAdapter;
 import com.rhinopacking.adapters.RegistroPaquetesListAdapter;
 import com.rhinopacking.includes.PopupError;
@@ -91,6 +92,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
     public static List<RegistroPaquete> mRegistrosPaquetes;
     public static List<RegistroGuia> mRegistrosGuias;
+
 
     private CoordinatorLayout snackbar;
     SnackbarError snackbarError;
@@ -387,7 +389,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    Uri uri=result.getData().getData();
+                        Uri uri=result.getData().getData();
                     //imageView.setImageURI(uri);
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);

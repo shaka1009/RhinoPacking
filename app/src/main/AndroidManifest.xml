@@ -27,6 +27,9 @@
         android:theme="@style/Theme.RhinoPacking"
         tools:targetApi="31">
         <activity
+            android:name=".HomeMostrar"
+            android:exported="false" />
+        <activity
             android:name=".HomePerfil"
             android:exported="false" />
         <activity

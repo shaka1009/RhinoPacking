@@ -49,7 +49,7 @@ public class SQL {
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
                 mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
 
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.2:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.6:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("DEPURACION", "ERROR: " + e);}
@@ -294,13 +294,13 @@ public class SQL {
                     try
                     {
                         stmGuia = mConection.createStatement();
-                        rsGuia = stmGuia.executeQuery("SELECT foto FROM dbo.registros_paquete WHERE id_guia='"+indexGuia+"'");
+                        rsGuia = stmGuia.executeQuery("SELECT foto FROM dbo.registros_guia WHERE id_guia='"+indexGuia+"'");
 
 
 
                         while(rsGuia.next())
                         {
-                            byte[] bytes = rs.getBytes("foto");
+                            byte[] bytes = rsGuia.getBytes("foto");
                             bitmapGuia = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                             guardarImagen(codigo, "GUIA", bitmapGuia, indexGuia);
@@ -312,7 +312,7 @@ public class SQL {
 
                     }catch (Exception i)
                     {
-                        Log.d("Shaka", "Error: " + i);
+                        Log.d("Shaka", "consultarGuias Error: " + i);
                     }
 
                 }
@@ -438,7 +438,7 @@ public class SQL {
 
             preparedStatement.execute();
 
-        }catch (Exception e){ Log.d("DEPURACION", "Error: " + e); return false; }
+        }catch (Exception e){ Log.d("Shaka", "Error addRegistro: " + e); return false; }
 
         return true;
     }
@@ -467,7 +467,7 @@ public class SQL {
             preparedStatement.execute();
 
             return true;
-        }catch (Exception e){ Log.d("DEPURACION", "Error: " + e); return false;}
+        }catch (Exception e){ Log.d("Shaka", "Error insertarDatosPaquete: " + e); return false;}
     }
 
     public  boolean insertarDatosGuia(String codigo, RegistroGuia registroGuia){
@@ -494,7 +494,7 @@ public class SQL {
             preparedStatement.execute();
 
             return true;
-        }catch (Exception e){ Log.d("DEPURACION", "Error: " + e); return false;}
+        }catch (Exception e){ Log.d("Shaka", "Error insertarDatosGuia: " + e); return false;}
     }
 
 

@@ -15,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -33,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.rhinopacking.DB.SQL;
+import com.rhinopacking.adapters.RegistroGuiasGridAdapter;
 import com.rhinopacking.adapters.RegistroGuiasListAdapter;
 import com.rhinopacking.adapters.RegistroPaquetesListAdapter;
 import com.rhinopacking.includes.PopupEliminar;
@@ -45,6 +48,7 @@ import com.rhinopacking.models.RegistroPaquete;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -95,6 +99,10 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
     ScrollView scrollview;
 
+
+    RegistroGuiasGridAdapter mRegistroGuiasGridAdapter;
+    GridView gvGuias;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +131,8 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
         mPopup = new PopupEliminar(this, getApplicationContext(), findViewById(R.id.popupEliminar));
         scrollview = findViewById(R.id.scrollview);
 
+
+        gvGuias = findViewById(R.id.gvGuias);
 
         tvStatus = findViewById(R.id.tvStatus);
 
@@ -342,6 +352,24 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
             @Override
             public void onTouchEvent(@NotNull RecyclerView recyclerView, @NotNull MotionEvent motionEvent) {
 
+            }
+        });
+
+        gvGuias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(HomeRegistrosDetalles.this, HomeMostrar.class);
+
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                mRegistrosGuias.get(i).getFoto().compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] bytesImage = byteArrayOutputStream.toByteArray();
+
+
+                intent.putExtra("img", bytesImage);
+                //startActivity(intent);
+
+                mPopupMostrarFoto.setPopupFoto(mRegistrosGuias.get(i).getFoto());
             }
         });
     }
@@ -568,11 +596,20 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                     if(mRegistrosGuias.size()!=0)
                     {
                         runOnUiThread(() -> {
+                            /*
                             registrosGuiaListAdapter = new RegistroGuiasListAdapter(mRegistrosGuias, this);
                             mRecyclerGuias.setHasFixedSize(true);
                             mRecyclerGuias.setLayoutManager(new LinearLayoutManager(this));
                             mRecyclerGuias.setAdapter(registrosGuiaListAdapter);
+*/
+
+                            mRegistroGuiasGridAdapter = new RegistroGuiasGridAdapter(HomeRegistrosDetalles.this, mRegistrosGuias);
+                            gvGuias.setAdapter(mRegistroGuiasGridAdapter);
+
+
                         });
+
+
                     }
                     else {
                         runOnUiThread(() -> {
