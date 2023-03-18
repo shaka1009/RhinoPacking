@@ -199,6 +199,7 @@ public class HomeFinalizar extends AppCompatActivity {
             else
                 pressButton = true;
             PickImage();
+            SleepButton();
             //camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
         });
 
@@ -232,7 +233,7 @@ public class HomeFinalizar extends AppCompatActivity {
             {
                 mPopupError.setPopupError("Debes tomar una foto de la entrega.");
             }
-            else if(rbSinPagar.isChecked()){
+            else if(rbSinPagar.isChecked() && registro.getMetodo()==0){
                 mPopupFinalizar.setPopup("No has ingresado método de pago, ¿Estás seguro que no pagó?\nFinaliza para terminar el registro.");
             }
             else if(!isConnected())
@@ -244,15 +245,15 @@ public class HomeFinalizar extends AppCompatActivity {
             else if(rbEfectivo.isChecked() || rbTransferencia.isChecked() || rbCortesia.isChecked())
             {
                 String metodoString = "";
-                if(metodo==1)
+                if(metodo==1 || registro.getMetodo()==1)
                 {
                     metodoString = "Efectivo.";
                 }
-                else if(metodo == 2)
+                else if(metodo == 2 || registro.getMetodo()==2)
                 {
                     metodoString = "Transferencia.";
                 }
-                else if(metodo == 3)
+                else if(metodo == 3 || registro.getMetodo()==3)
                 {
                     metodoString = "Cortesía.";
                 }

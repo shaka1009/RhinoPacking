@@ -451,12 +451,13 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                     });
                 }
 
+                /*
                 if(!registro.getTelefono().equals(""))
                 {
                     runOnUiThread(() -> {
                         etTelefono.setText(registro.getTelefono());
                     });
-                }
+                }*/
 
                 runOnUiThread(() -> {
                     etCosto.setText(registro.getPrecio()+"$");
@@ -494,7 +495,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                 }
 
 
-                if(Home.mUser.isAdministrador() && registro.getStatus().equals("EN_BODEGA") && registro.getPrecio()!=0 && !registro.getTelefono().equals("") && registro.isActivo())
+                if(Home.mUser.isAdministrador() && registro.getStatus().equals("EN_BODEGA") && registro.getPrecio()!=0 && registro.isActivo())
                 {
                     runOnUiThread(() -> {
                         btnChangeStatus.setVisibility(View.VISIBLE);
@@ -525,7 +526,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                     {
                         if(menuLoad)
                         {
-                            if(Home.mUser.isAdministrador() && (registro.getStatus().equals("EN_BODEGA") && (registro.getPrecio()==0 || registro.getTelefono().equals(""))))
+                            if(Home.mUser.isAdministrador() && (registro.getStatus().equals("EN_BODEGA") && (registro.getPrecio()==0)))
                             {
                                 runOnUiThread(() -> {
                                     getMenuInflater().inflate(R.menu.menu_toolbar_registros_detalles_incompleto, this.menu); //MOSTRAR
