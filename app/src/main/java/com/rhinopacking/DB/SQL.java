@@ -49,18 +49,17 @@ public class SQL {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
-
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.6:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.6:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
-        }catch(Exception e){ Log.d("DEPURACION", "ERROR: " + e);}
+        }catch(Exception e){ Log.d("Shaka", "ERROR connect: " + e);}
     }
 
     public void close(){
         try{
             mConection.close();
-        }catch(Exception e){ Log.d("DEPURACION", "ERROR: " + e);}
+        }catch(Exception e){ Log.d("Shaka", "ERROR close: " + e);}
     }
 
 
@@ -133,15 +132,15 @@ public class SQL {
             stm = mConection.createStatement();
             rs = stm.executeQuery("SELECT codigo, nombre, telefono, precio, pagado, status, observaciones, fecha_almacen, fecha_entrega, activo, metodo_pago, id_operador FROM dbo.registros WHERE dbo.registros.codigo = '"+codigo+"'");
 
-            while(rs.next()){
+            if(rs.next()){
                 registro = new Registro(rs.getString("codigo"), rs.getString("nombre"), rs.getString("telefono"), rs.getFloat("precio"), rs.getBoolean("pagado"), rs.getString("status")
                         ,rs.getString("observaciones"), rs.getTimestamp("fecha_almacen"), rs.getTimestamp("fecha_entrega"), rs.getBoolean("activo"), rs.getInt("metodo_pago"), rs.getInt("id_operador"));
                 return true;
             }
-            Log.d("Shaka", "ERROR");
+            Log.d("Shaka", "ERROR consultarRegistro:");
             return false;
         }catch (Exception e){
-            Log.d("Shaka", "ERROR" + e);
+            Log.d("Shaka", "ERROR consultarRegistro" + e);
             return false;
         }
     }
@@ -713,7 +712,7 @@ public class SQL {
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT DISTINCT fecha, month(fecha) AS mes, year(fecha) as year from dbo.status ORDER BY fecha DESC");
+            rs = stm.executeQuery("SELECT DISTINCT month(fecha) AS mes, year(fecha) AS year from dbo.status ORDER BY year, mes DESC");
 
             while(rs.next()){
                 fecha = new Fecha(rs.getInt("mes"), rs.getInt("year"));

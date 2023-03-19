@@ -3,6 +3,7 @@ package com.rhinopacking;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
@@ -12,6 +13,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.rhinopacking.includes.Toolbar;
 import com.rhinopacking.models.Fecha;
 import com.rhinopacking.models.RegistroPaquete;
 import com.rhinopacking.models.Status;
+import com.rhinopacking.models.User;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -48,11 +51,15 @@ public class HomeStatus extends AppCompatActivity {
 
     Button btnAddStatus;
 
+    boolean fechasCargadas;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_status);
         Toolbar.show(this, true, "Status");
+
+        //Home.mUser = new User("Jesus", "3319522734", false);
 
         declaration();
         listener();
@@ -63,6 +70,7 @@ public class HomeStatus extends AppCompatActivity {
 
     @SuppressLint("SimpleDateFormat")
     private void declaration() {
+        fechasCargadas = false;
         mSql = new SQL();
         mFechas = new ArrayList<>();
         spinnerFecha = findViewById(R.id.spinnerFecha);
@@ -71,15 +79,12 @@ public class HomeStatus extends AppCompatActivity {
 
 
 
+        spinnerFecha.setEnabled(false);
+        spinnerFecha.setClickable(false);
+
         if(Home.mUser.isAdministrador())
         {
-            spinnerFecha.setEnabled(true);
-            spinnerFecha.setClickable(true);
             btnAddStatus.setVisibility(View.VISIBLE);
-        }
-        else {
-            spinnerFecha.setEnabled(false);
-            spinnerFecha.setClickable(false);
         }
 
     }
@@ -93,7 +98,6 @@ public class HomeStatus extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 loadDatos(position);
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -153,6 +157,10 @@ public class HomeStatus extends AppCompatActivity {
         {
             tableRow.setBackgroundResource(R.drawable.table_rojo_claro);
         }
+        else
+        {
+            tableRow.setBackgroundResource(R.drawable.table_gris_claro);
+        }
 
 
 
@@ -179,27 +187,31 @@ public class HomeStatus extends AppCompatActivity {
     boolean first = true;
     private void loadDatos(int position) {
         new Thread(() -> {
-            if(mSql.consultarStatus(mFechas.get(position).getMes(), mFechas.get(position).getYear()))
-            {
-
-                int count=tableLayout.getChildCount();
-                for(int i=0;i<count;i++)
+            try {
+                if(mSql.consultarStatus(mFechas.get(position).getMes(), mFechas.get(position).getYear()))
                 {
-                    int finalI = i;
-                    runOnUiThread(() -> {
-                        cleanTable(tableLayout);
-                    });
+
+                    int count=tableLayout.getChildCount();
+                    for(int i=0;i<count;i++)
+                    {
+                        int finalI = i;
+                        runOnUiThread(() -> {
+                            cleanTable(tableLayout);
+                        });
 
 
-                }for(int x=0; x<mSql.getStatus().size(); x++)
-                {
-                    int finalX = x;
+                    }
+                    for(int x=0; x<mSql.getStatus().size(); x++)
+                    {
+                        int finalX = x;
 
-                    runOnUiThread(() -> {
-                        table(mSql.getStatus().get(finalX));
-                    });
+                        runOnUiThread(() -> {
+                            table(mSql.getStatus().get(finalX));
+                        });
+                    }
                 }
-            }
+            }catch (Exception e) { Log.d("Shaka", "Error loadDatos: " + e); }
+
         }).start();
     }
 
@@ -232,7 +244,15 @@ public class HomeStatus extends AppCompatActivity {
                     spinnerFecha.setAdapter(adaptador1);
                 });
 
+
+                if(mFechas.size()!=0 && Home.mUser.isAdministrador())
+                {
+                    spinnerFecha.setEnabled(true);
+                    spinnerFecha.setClickable(true);
+                }
+
             }
+
 
         }).start();
 

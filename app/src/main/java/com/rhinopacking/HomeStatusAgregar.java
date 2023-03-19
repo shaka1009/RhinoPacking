@@ -125,18 +125,22 @@ public class HomeStatusAgregar extends AppCompatActivity {
             if(etCodigo.getText().toString().equals(""))
             {
                 mPopupError.setPopupError("Ingresa el Código.");
+                SleepButton();
             }
             else if(etMedidas.getText().toString().equals(""))
             {
                 mPopupError.setPopupError("Ingresa las medidas.");
+                SleepButton();
             }
             else if(etCantidad.getText().toString().equals("0"))
             {
                 mPopupError.setPopupError("Ingresa cantidad de Cajas.");
+                SleepButton();
             }
             else if(etStatus.getText().toString().equals(""))
             {
                 mPopupError.setPopupError("Ingresa un Status.");
+                SleepButton();
             } else
             {
                 Status mStatus = new Status(Integer.parseInt(etCodigo.getText().toString()), Float.parseFloat(etMedidas.getText().toString()), cantidad, etStatus.getText().toString().toUpperCase(), mFecha);
@@ -148,28 +152,32 @@ public class HomeStatusAgregar extends AppCompatActivity {
                 && !(mStatus.getStatus().contains("D") && mStatus.getStatus().contains("F")))
                 {
                     mPopupError.setPopupError("Debes ingrear un Status válido.");
+                    SleepButton();
+                }
+                else {
+                    new Thread(() -> {
+                        if(mSql.insertarStatus(mStatus))
+                        {
+                            runOnUiThread(() -> {
+                                Toast.makeText(this, "Status Añadito", Toast.LENGTH_SHORT).show();
+                            });
+
+                            Intent resultIntent = new Intent();
+                            setResult(RESULT_OK, resultIntent);
+                            finish();
+                        }
+                        else
+                        {
+                            runOnUiThread(() -> {
+                                mPopupError.setPopupError("Error de conexión.");
+                            });
+                            SleepButton();
+                        }
+                    }).start();
                 }
 
 
-                new Thread(() -> {
-                    if(mSql.insertarStatus(mStatus))
-                    {
-                        runOnUiThread(() -> {
-                            Toast.makeText(this, "Status Añadito", Toast.LENGTH_SHORT).show();
-                        });
 
-                        Intent resultIntent = new Intent();
-                        setResult(RESULT_OK, resultIntent);
-                        finish();
-                    }
-                    else
-                    {
-                        runOnUiThread(() -> {
-                            mPopupError.setPopupError("Error de conexión.");
-                        });
-                        SleepButton();
-                    }
-                }).start();
 
 
 
