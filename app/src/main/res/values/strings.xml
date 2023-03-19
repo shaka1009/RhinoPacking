@@ -44,5 +44,6 @@
     <string name="asignar_operador">Asignar Operador</string>
     <string name="guias_opcional">Guías (Opcional)</string>
     <string name="paquetes">Paquetes</string>
+    <string name="telefono">Teléfono</string>
 
 </resources>

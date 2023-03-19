@@ -30,4 +30,14 @@
 
     <color name="verde">#4CAF50</color>
     <color name="Gris4">#FF4C657B</color>
+
+
+    <color name="RojoClaro">#FF6666</color>
+    <color name="AmarilloClaro">#FFFF99</color>
+    <color name="AzulClaro">#99CCFF</color>
+    <color name="VerdeClaro">#99CC99</color>
+
+
+
+
 </resources>

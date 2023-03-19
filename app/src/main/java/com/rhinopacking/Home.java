@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -57,11 +58,12 @@ public class Home extends AppCompatActivity {
 
     private boolean pressButton;
 
-    CardView cvRegistros, cvFinalizar, cvTabulador;
+    CardView cvRegistros, cvFinalizar, cvTabulador, cvStatus;
 
     private ConnectivityManager cm;
 
     SQL mSql;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +128,7 @@ public class Home extends AppCompatActivity {
         cvRegistros = findViewById(R.id.cvRegistros);
         cvFinalizar = findViewById(R.id.cvFinalizar);
         cvTabulador = findViewById(R.id.cvTabulador);
+        cvStatus = findViewById(R.id.cvStatus);
     }
 
 
@@ -199,6 +202,18 @@ public class Home extends AppCompatActivity {
                 else pressButton = true;
 
                 startActivity(new Intent(Home.this , HomeTabulador.class));
+                SleepButton();
+
+            }).start();
+        });
+
+        cvStatus.setOnClickListener(view -> {
+            new Thread(() -> {
+                if(pressButton)
+                    return;
+                else pressButton = true;
+
+                startActivity(new Intent(Home.this , HomeStatus.class));
                 SleepButton();
 
             }).start();

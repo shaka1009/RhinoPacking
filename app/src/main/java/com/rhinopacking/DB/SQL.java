@@ -6,10 +6,12 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.util.Log;
 
+import com.rhinopacking.models.Fecha;
 import com.rhinopacking.models.Operador;
 import com.rhinopacking.models.Registro;
 import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
+import com.rhinopacking.models.Status;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -47,9 +49,9 @@ public class SQL {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
 
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.6:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.6:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("DEPURACION", "ERROR: " + e);}
@@ -695,4 +697,63 @@ public class SQL {
         }catch(Exception e) { return false; }
     }
 
+    List <Fecha> fechas;
+
+    public List<Fecha> getFechas() {
+        return fechas;
+    }
+
+    public boolean consultarFechas()
+    {
+        fechas= new ArrayList<>();
+        Fecha fecha;
+        ResultSet rs;
+        Statement stm;
+        try{
+            connect();
+
+            stm = mConection.createStatement();
+            rs = stm.executeQuery("SELECT DISTINCT month(fecha) AS mes, year(fecha) as year from dbo.status");
+
+            while(rs.next()){
+                fecha = new Fecha(rs.getInt("mes"), rs.getInt("year"));
+                fechas.add(fecha);
+            }
+
+            return true;
+        }catch (Exception e){
+            Log.d("Shaka", "consultarFechas Error: " + e);
+            return false;
+        }
+    }
+
+    List <Status> status;
+
+    public List<Status> getStatus() {
+        return status;
+    }
+
+    public boolean consultarStatus(int mes, int year)
+    {
+        status= new ArrayList<>();
+        Status mStatus;
+        ResultSet rs;
+        Statement stm;
+        try{
+            connect();
+
+            stm = mConection.createStatement();
+            rs = stm.executeQuery("SELECT * FROM dbo.status WHERE ((select month(fecha)) = '"+ mes +"') AND ((select year(fecha)) = '"+ year +"')");
+
+            while(rs.next()){
+                mStatus = new Status(rs.getInt("id_status"), rs.getInt("codigo"), rs.getFloat("medidas"), rs.getInt("cajas"), rs.getString("status"), rs.getTimestamp("fecha"));
+                status.add(mStatus);
+            }
+
+            return true;
+        }catch (Exception e){
+            Log.d("Shaka", "consultarStatus Error: " + e);
+            return false;
+        }
+    }
 }
