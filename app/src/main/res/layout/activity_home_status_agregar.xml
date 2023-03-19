@@ -14,4 +14,235 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAddStatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Código"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginStart="5dp" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etCodigo"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa Código."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_key"
+                            android:drawablePadding="10dp"
+                            android:maxLength="40"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Medidas"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginStart="5dp" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etMedidas"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa Medidas."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_medidas"
+                            android:drawablePadding="10dp"
+                            android:maxLength="40"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end"
+                            android:inputType="numberDecimal"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cantidad de Cajas"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginBottom="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginEnd="30dp">
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnMenos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="-"
+                            android:background="@color/black"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/open_sans_bold"/>
+
+                        <EditText
+                            android:id="@+id/etCantidad"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="10"
+                            android:text="1"
+                            android:inputType="number"
+                            android:textColor="@color/black"
+                            android:gravity="center"
+                            android:fontFamily="@font/open_sans_bold"/>
+
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnMas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:text="+"
+                            android:background="@color/black"
+                            android:textColor="@color/white"
+                            android:fontFamily="@font/open_sans_bold"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Status"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginStart="5dp" />
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/etStatus"
+                            android:textSize="14sp"
+                            android:shadowColor="@color/black"
+                            android:fontFamily="@font/open_sans"
+                            android:hint="Ingresa Status."
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_location"
+                            android:drawablePadding="10dp"
+                            android:maxLength="10"
+                            android:gravity="left|center"
+                            android:singleLine="true"
+                            android:ellipsize = "end" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnAddStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_press"
+        android:fontFamily="@font/open_sans_semibold"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Añadir Status"
+        android:textAllCaps="false"
+        android:textColor="#FFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

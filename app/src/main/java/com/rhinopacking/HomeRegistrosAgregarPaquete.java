@@ -32,6 +32,7 @@ import com.rhinopacking.includes.PopupMostrarFoto;
 import com.rhinopacking.includes.Toolbar;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
 import java.util.regex.Pattern;
 
@@ -101,6 +102,7 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
         });
 
         btnMenos.setOnClickListener(view -> {
+            UIUtil.hideKeyboard(HomeRegistrosAgregarPaquete.this); //ESCONDER TECLADO
             if(cantidad>1)
             {
                 cantidad--;
@@ -116,21 +118,22 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
 
         btnMas.setOnClickListener(view -> {
 
+            UIUtil.hideKeyboard(HomeRegistrosAgregarPaquete.this); //ESCONDER TECLADO
+
             if(etCantidad.getText().toString().equals(""))
             {
                 cantidad = 1;
             }
-            else if(Integer.parseInt(etCantidad.getText().toString())<0)
+            else if(Integer.parseInt(etCantidad.getText().toString())<=0)
                 cantidad = 1;
             else if(Integer.parseInt(etCantidad.getText().toString())>0){
+                cantidad = Integer.parseInt(etCantidad.getText().toString());
                 cantidad++;
             }
             else
             {
                 cantidad = Integer.parseInt(etCantidad.getText().toString());
             }
-
-
             etCantidad.setText(String.valueOf(cantidad));
         });
 

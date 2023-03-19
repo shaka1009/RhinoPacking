@@ -713,7 +713,7 @@ public class SQL {
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT DISTINCT month(fecha) AS mes, year(fecha) as year from dbo.status");
+            rs = stm.executeQuery("SELECT DISTINCT fecha, month(fecha) AS mes, year(fecha) as year from dbo.status ORDER BY fecha DESC");
 
             while(rs.next()){
                 fecha = new Fecha(rs.getInt("mes"), rs.getInt("year"));
@@ -756,4 +756,23 @@ public class SQL {
             return false;
         }
     }
+
+
+
+
+
+    public  boolean insertarStatus(Status status){
+
+        try{
+
+            connect();
+            String query = "INSERT INTO [RhinoPacking].[dbo].[status] ([codigo], [medidas], [cajas], [status], [fecha]) VALUES ('"+status.getCodigo()+"', '"+status.getMedidas()+"', '"+status.getCajas()+"', '"+status.getStatus()+"', '"+status.getmFecha().getSqlFecha()+"')";
+            PreparedStatement preparedStatement = mConection.prepareStatement(query);
+
+            preparedStatement.execute();
+
+            return true;
+        }catch (Exception e){ Log.d("Shaka", "Error insertarStatus: " + e); return false;}
+    }
+
 }

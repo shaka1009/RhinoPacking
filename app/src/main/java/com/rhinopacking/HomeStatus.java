@@ -111,7 +111,7 @@ public class HomeStatus extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
-                    ///CARGAR DE NUEVO
+                    obtener_fechas();
                 }
             });
 
@@ -137,7 +137,7 @@ public class HomeStatus extends AppCompatActivity {
         tableRow = new TableRow(this);
 
 
-        if(mStatus.getStatus().contains("G") && mStatus.getStatus().contains("D") && mStatus.getStatus().contains("G"))
+        if(mStatus.getStatus().contains("G") && mStatus.getStatus().contains("D") && mStatus.getStatus().contains("L"))
         {
             tableRow.setBackgroundResource(R.drawable.table_verde_claro);
         }
