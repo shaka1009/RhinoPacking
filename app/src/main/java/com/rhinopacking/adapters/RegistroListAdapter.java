@@ -84,7 +84,6 @@ public class RegistroListAdapter extends RecyclerView.Adapter<RegistroListAdapte
         }
         void bindData(Registro item)
         {
-            Log.d("Shaka", "Código: " + item.getCodigo() + " Nombre: " + item.getNombre() + " Semana: " + item.getSemana() + " Status: " + item.getStatus() + " Metodo: " + item.getMetodo());
             SQL mSql = new SQL();
             String status = "";
 
@@ -92,8 +91,6 @@ public class RegistroListAdapter extends RecyclerView.Adapter<RegistroListAdapte
             tvCodigo.setText(item.getCodigo());
             tvNombre.setText("Nombre: " + item.getNombre());
             tvSemana.setText("Semana: " +  item.getSemana());
-
-
 
             if(!item.isActivo())
             {

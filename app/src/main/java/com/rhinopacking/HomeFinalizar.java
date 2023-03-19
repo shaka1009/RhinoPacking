@@ -120,6 +120,11 @@ public class HomeFinalizar extends AppCompatActivity {
                         runOnUiThread(() -> {
                             rbEfectivo.setVisibility(View.GONE);
                             llEfectivo.setVisibility(View.VISIBLE);
+                            rbSinPagar.setChecked(false);
+                            rbEfectivo.setChecked(true);
+                            rbTransferencia.setChecked(false);
+                            rbCortesia.setChecked(false);
+
                         });
                     }
                     else if(registro.getMetodo()==2)
@@ -127,6 +132,10 @@ public class HomeFinalizar extends AppCompatActivity {
                         runOnUiThread(() -> {
                             rbTransferencia.setVisibility(View.GONE);
                             llTransferencia.setVisibility(View.VISIBLE);
+                            rbSinPagar.setChecked(false);
+                            rbEfectivo.setChecked(false);
+                            rbTransferencia.setChecked(true);
+                            rbCortesia.setChecked(false);
                         });
                     }
                     else if(registro.getMetodo()==3)
@@ -134,6 +143,11 @@ public class HomeFinalizar extends AppCompatActivity {
                         runOnUiThread(() -> {
                             rbCortesia.setVisibility(View.GONE);
                             llCortesia.setVisibility(View.VISIBLE);
+                            rbSinPagar.setChecked(false);
+                            rbEfectivo.setChecked(false);
+                            rbTransferencia.setChecked(false);
+                            rbCortesia.setChecked(true);
+
                         });
                     }
                 }
@@ -143,6 +157,10 @@ public class HomeFinalizar extends AppCompatActivity {
                         llEfectivo.setVisibility(View.VISIBLE);
                         llTransferencia.setVisibility(View.VISIBLE);
                         llCortesia.setVisibility(View.VISIBLE);
+                        rbSinPagar.setChecked(true);
+                        rbEfectivo.setChecked(false);
+                        rbTransferencia.setChecked(false);
+                        rbCortesia.setChecked(false);
                     });
                 }
                 cargo = true;
@@ -225,8 +243,6 @@ public class HomeFinalizar extends AppCompatActivity {
                 metodo=2;
             else if(rbCortesia.isChecked())
                 metodo=3;
-
-
 
 
             if(bitmap == null)

@@ -456,17 +456,17 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
             if (!mainDir.exists()) {
                 if(mainDir.mkdirs())
                 {
-                    Log.d("Shaka", "Dir creado:"+ mainDir);
+                    Log.d("DEP", "Dir creado:"+ mainDir);
                 }
 
                 else
                 {
-                    Log.d("Shaka", "Dir No creado:"+ mainDir);
+                    Log.d("DEP", "Dir No creado:"+ mainDir);
                 }
             }
             else
             {
-                Log.d("Shaka", "existe" + mainDir);
+                Log.d("DEP", "existe" + mainDir);
             }
 
             String imageName = crearNombreArchivoJPG(codigo);
@@ -480,13 +480,13 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
             }catch (Exception e)
             {
-                Log.d("SHAKA", "Error: " + e);
+                Log.d("Rhino", "Error saveImagen: " + e);
             }
 
         }
 
         catch (Exception e) {
-            Log.d("SHAKA", "Error: " + e);
+            Log.d("Rhino", "Error saveImagen: " + e);
         }
     }
 
