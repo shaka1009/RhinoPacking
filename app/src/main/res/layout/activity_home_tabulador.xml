@@ -28,6 +28,37 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tvFecha"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="00/00/0000"
+            android:gravity="right"
+            android:textSize="14sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"/>
+
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/etNombre"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/open_sans"
+                    android:hint="Nombre"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/transparent"
+                    android:gravity="left|center"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

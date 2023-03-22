@@ -25,6 +25,7 @@ import com.rhinopacking.models.Tabulador;
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeTabulador extends AppCompatActivity {
@@ -35,7 +36,7 @@ public class HomeTabulador extends AppCompatActivity {
 
     EditText etN1, etN2, etN3, etDolar;
 
-    TextView tvTotalPulgadas, tvTotalDividido, tvTotalPrecio;
+    TextView tvFecha, tvTotalPulgadas, tvTotalDividido, tvTotalPrecio;
 
     TabuladorListAdapter tabuladorListAdapter;
 
@@ -55,8 +56,17 @@ public class HomeTabulador extends AppCompatActivity {
         Toolbar.show(this, true, "Tabulador");
 
         declaration();
+        fecha();
         listener();
 
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void fecha() {
+        Calendar c1 = Calendar.getInstance();
+        tvFecha.setText(c1.get(Calendar.DAY_OF_MONTH) + "/" +
+                (c1.get(Calendar.MONTH) +1) + "/"
+        +c1.get(Calendar.YEAR));
     }
 
     @SuppressLint("SetTextI18n")
@@ -123,6 +133,7 @@ public class HomeTabulador extends AppCompatActivity {
         tvTotalDividido = findViewById(R.id.tvTotalDividido);
         etDolar = findViewById(R.id.etDolar);
         tvTotalPrecio = findViewById(R.id.tvTotalPrecio);
+        tvFecha = findViewById(R.id.tvFecha);
 
         suma = 0;
 
