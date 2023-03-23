@@ -204,7 +204,7 @@ public class HomeCheckPoint extends AppCompatActivity {
     private void loadDatos(int position) {
         new Thread(() -> {
             try {
-                if(mSql.consultarCheckPoint(mFechas.get(position).getMes(), mFechas.get(position).getYear()))
+                if(mSql.consultarCheckPoints(mFechas.get(position).getMes(), mFechas.get(position).getYear()))
                 {
 
                     int count=tableLayout.getChildCount();
@@ -256,16 +256,18 @@ public class HomeCheckPoint extends AppCompatActivity {
 
                 ArrayAdapter<String> adaptador1 = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, fechaString);
 
-                runOnUiThread(() -> {
-                    spinnerFecha.setAdapter(adaptador1);
-                });
-
-
                 if(mFechas.size()!=0 && Home.mUser.isAdministrador())
                 {
                     spinnerFecha.setEnabled(true);
                     spinnerFecha.setClickable(true);
                 }
+
+                runOnUiThread(() -> {
+                    spinnerFecha.setAdapter(adaptador1);
+                });
+
+
+
 
             }
 

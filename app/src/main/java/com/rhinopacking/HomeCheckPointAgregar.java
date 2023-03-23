@@ -141,7 +141,7 @@ public class HomeCheckPointAgregar extends AppCompatActivity {
             }
             else if((mFecha.getMes()>(c1.get(Calendar.MONTH) +1))&&(mFecha.getYear()>=c1.get(Calendar.YEAR))||((mFecha.getDia() > c1.get(Calendar.DAY_OF_MONTH))&&(mFecha.getMes() == (c1.get(Calendar.MONTH) +1))&&(mFecha.getYear()==c1.get(Calendar.YEAR))))
             {
-                mPopupError.setPopupError("Mes no válido.");
+                mPopupError.setPopupError("Fecha no válida.");
                 SleepButton();
             }
             else

@@ -49,8 +49,8 @@ public class SQL {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.8:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.8:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("Shaka", "ERROR connect: " + e);}
@@ -755,7 +755,7 @@ public class SQL {
         return status;
     }
 
-    public boolean consultarCheckPoint(int mes, int year)
+    public boolean consultarCheckPoints(int mes, int year)
     {
         status= new ArrayList<>();
         CheckPoint mStatus;
@@ -807,6 +807,48 @@ public class SQL {
     }
 
 
+    CheckPoint mCheckpoint;
+
+    public CheckPoint getmCheckpoint() {
+        return mCheckpoint;
+    }
+
+    public boolean consultarCheckPoint(int id_checkpoint)
+    {
+        status= new ArrayList<>();
+
+        ResultSet rs;
+        Statement stm;
+        try{
+            connect();
+
+            stm = mConection.createStatement();
+            rs = stm.executeQuery("SELECT\n" +
+                    "\t*\n" +
+                    "FROM\n" +
+                    "\tdbo.checkpoints\n" +
+                    "WHERE\n" +
+                    "\tid_checkpoint = '"+id_checkpoint+"'");
+
+            if(rs.next()){
+                mCheckpoint = new CheckPoint(rs.getInt("id_checkpoint"), rs.getInt("codigo"), rs.getFloat("medidas"), rs.getInt("cajas"),
+                        rs.getBoolean("checkpoint_la"), rs.getTimestamp("fecha_la"), rs.getString("observaciones_la"),
+                        rs.getBoolean("checkpoint_ng"), rs.getTimestamp("fecha_ng"), rs.getString("observaciones_ng"),
+                        rs.getBoolean("checkpoint_gdl"), rs.getTimestamp("fecha_gdl"), rs.getString("observaciones_gdl"),
+                        rs.getBoolean("checkpoint_df"), rs.getTimestamp("fecha_df"), rs.getString("observaciones_df")
+
+                );
+                return true;
+            }
+
+            return false;
+        }catch (Exception e){
+            Log.d("Shaka", "consultarStatus Error: " + e);
+            return false;
+        }
+    }
+
+
 
 
 
@@ -823,4 +865,18 @@ public class SQL {
         }catch (Exception e){ Log.d("Shaka", "Error insertarCheckPoint: " + e); return false;}
     }
 
+
+    public boolean updateCheckPoint(int id_checkpoint, String checkpoint, String fecha)
+    {
+        try
+        {
+            connect();
+
+            String query = "UPDATE [RhinoPacking].[dbo].[checkpoints] SET [checkpoint_"+ checkpoint +"]='1', [fecha_"+ checkpoint +"]='"+ fecha +"' WHERE ([id_checkpoint]='"+id_checkpoint+"')";
+
+            PreparedStatement preparedStatement = mConection.prepareStatement(query);
+            preparedStatement.execute();
+            return true;
+        }catch(Exception e) { return false; }
+    }
 }
