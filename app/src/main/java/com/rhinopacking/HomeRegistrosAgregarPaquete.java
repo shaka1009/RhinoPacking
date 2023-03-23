@@ -157,8 +157,8 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
                 mPopupError.setPopupError("El formato de las medidas debe de ser de 3 dimensiones separando los números con una 'x'. O si son más dimensiones, separadas con un '-'.");
             else {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("cantidad", etCantidad.getText().toString().replaceAll("X", "x"));
-                resultIntent.putExtra("medidas", etMedidas.getText().toString());
+                resultIntent.putExtra("cantidad", etCantidad.getText().toString());
+                resultIntent.putExtra("medidas", etMedidas.getText().toString().replaceAll("X", "x"));
                 resultIntent.putExtra("foto_paquete", uri.toString());
                 setResult(RESULT_OK, resultIntent);
                 finish();

@@ -146,7 +146,7 @@ public class HomeCheckPointAgregar extends AppCompatActivity {
             }
             else
             {
-               CheckPoint mStatus = new CheckPoint(Integer.parseInt(etCodigo.getText().toString()), Float.parseFloat(etMedidas.getText().toString()), cantidad, mFecha, etObservaciones.getText().toString());
+               CheckPoint mStatus = new CheckPoint(Integer.parseInt(etCodigo.getText().toString()), Float.parseFloat(etMedidas.getText().toString()), Integer.parseInt(etCantidad.getText().toString()), mFecha, etObservaciones.getText().toString());
 
 
                     new Thread(() -> {
