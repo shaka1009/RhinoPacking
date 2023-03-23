@@ -11,7 +11,7 @@ import com.rhinopacking.models.Operador;
 import com.rhinopacking.models.Registro;
 import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
-import com.rhinopacking.models.Status;
+import com.rhinopacking.models.CheckPoint;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -50,7 +50,7 @@ public class SQL {
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
                 //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.6:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.8:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("Shaka", "ERROR connect: " + e);}
@@ -712,7 +712,30 @@ public class SQL {
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT DISTINCT month(fecha) AS mes, year(fecha) AS year from dbo.status ORDER BY year, mes DESC");
+            rs = stm.executeQuery("SELECT DISTINCT \n" +
+                    "\tmonth(CAST((CASE\n" +
+                    "WHEN checkpoint_df = 1 THEN\n" +
+                    "\tfecha_df\n" +
+                    "WHEN checkpoint_gdl = 1 THEN\n" +
+                    "\tfecha_gdl\n" +
+                    "WHEN checkpoint_ng = 1 THEN\n" +
+                    "\tfecha_ng\n" +
+                    "WHEN checkpoint_la = 1 THEN\n" +
+                    "\tfecha_la\n" +
+                    "END) AS DATE)) as mes, \n" +
+                    "year(CAST((CASE\n" +
+                    "WHEN checkpoint_df = 1 THEN\n" +
+                    "\tfecha_df\n" +
+                    "WHEN checkpoint_gdl = 1 THEN\n" +
+                    "\tfecha_gdl\n" +
+                    "WHEN checkpoint_ng = 1 THEN\n" +
+                    "\tfecha_ng\n" +
+                    "WHEN checkpoint_la = 1 THEN\n" +
+                    "\tfecha_la\n" +
+                    "END) AS DATE)) as year\n" +
+                    "\n" +
+                    "FROM\n" +
+                    "\tcheckpoints\n ORDER BY year, mes DESC");
 
             while(rs.next()){
                 fecha = new Fecha(rs.getInt("mes"), rs.getInt("year"));
@@ -726,26 +749,53 @@ public class SQL {
         }
     }
 
-    List <Status> status;
+    List <CheckPoint> status;
 
-    public List<Status> getStatus() {
+    public List<CheckPoint> getStatus() {
         return status;
     }
 
-    public boolean consultarStatus(int mes, int year)
+    public boolean consultarCheckPoint(int mes, int year)
     {
         status= new ArrayList<>();
-        Status mStatus;
+        CheckPoint mStatus;
         ResultSet rs;
         Statement stm;
         try{
             connect();
 
             stm = mConection.createStatement();
-            rs = stm.executeQuery("SELECT * FROM dbo.status WHERE ((select month(fecha)) = '"+ mes +"') AND ((select year(fecha)) = '"+ year +"')");
+            rs = stm.executeQuery("SELECT * FROM checkpoints\n" +
+                    "\n" +
+                    "WHERE month(CAST((CASE\n" +
+                    "WHEN checkpoint_df = 1 THEN\n" +
+                    "\tfecha_df\n" +
+                    "WHEN checkpoint_gdl = 1 THEN\n" +
+                    "\tfecha_gdl\n" +
+                    "WHEN checkpoint_ng = 1 THEN\n" +
+                    "\tfecha_ng\n" +
+                    "WHEN checkpoint_la = 1 THEN\n" +
+                    "\tfecha_la\n" +
+                    "END) AS DATE)) = "+ mes +" \n" +
+                    "AND year(CAST((CASE\n" +
+                    "WHEN checkpoint_df = 1 THEN\n" +
+                    "\tfecha_df\n" +
+                    "WHEN checkpoint_gdl = 1 THEN\n" +
+                    "\tfecha_gdl\n" +
+                    "WHEN checkpoint_ng = 1 THEN\n" +
+                    "\tfecha_ng\n" +
+                    "WHEN checkpoint_la = 1 THEN\n" +
+                    "\tfecha_la\n" +
+                    "END) AS DATE)) = " + year);
 
             while(rs.next()){
-                mStatus = new Status(rs.getInt("id_status"), rs.getInt("codigo"), rs.getFloat("medidas"), rs.getInt("cajas"), rs.getString("status"), rs.getTimestamp("fecha"));
+                mStatus = new CheckPoint(rs.getInt("id_checkpoint"), rs.getInt("codigo"), rs.getFloat("medidas"), rs.getInt("cajas"),
+                        rs.getBoolean("checkpoint_la"), rs.getTimestamp("fecha_la"), rs.getString("observaciones_la"),
+                        rs.getBoolean("checkpoint_ng"), rs.getTimestamp("fecha_ng"), rs.getString("observaciones_ng"),
+                        rs.getBoolean("checkpoint_gdl"), rs.getTimestamp("fecha_gdl"), rs.getString("observaciones_gdl"),
+                        rs.getBoolean("checkpoint_df"), rs.getTimestamp("fecha_df"), rs.getString("observaciones_df")
+
+                        );
                 status.add(mStatus);
             }
 
@@ -760,18 +810,17 @@ public class SQL {
 
 
 
-    public  boolean insertarStatus(Status status){
+    public  boolean insertarCheckPoint(CheckPoint status){
 
         try{
 
             connect();
-            String query = "INSERT INTO [RhinoPacking].[dbo].[status] ([codigo], [medidas], [cajas], [status], [fecha]) VALUES ('"+status.getCodigo()+"', '"+status.getMedidas()+"', '"+status.getCajas()+"', '"+status.getStatus()+"', '"+status.getmFecha().getSqlFecha()+"')";
+            String query = "INSERT INTO [RhinoPacking].[dbo].[checkpoints] ([codigo], [medidas], [cajas], [checkpoint_la], [fecha_la], [observaciones_la]) VALUES ('"+status.getCodigo()+"', '"+status.getMedidas()+"', '"+status.getCajas()+"', '1', '"+status.getmFecha().getSqlFecha()+"', '"+status.getObservaciones_la()+"')";
             PreparedStatement preparedStatement = mConection.prepareStatement(query);
-
             preparedStatement.execute();
 
             return true;
-        }catch (Exception e){ Log.d("Shaka", "Error insertarStatus: " + e); return false;}
+        }catch (Exception e){ Log.d("Shaka", "Error insertarCheckPoint: " + e); return false;}
     }
 
 }

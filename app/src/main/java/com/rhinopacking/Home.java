@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -213,7 +212,7 @@ public class Home extends AppCompatActivity {
                     return;
                 else pressButton = true;
 
-                startActivity(new Intent(Home.this , HomeStatus.class));
+                startActivity(new Intent(Home.this , HomeCheckPoint.class));
                 SleepButton();
 
             }).start();

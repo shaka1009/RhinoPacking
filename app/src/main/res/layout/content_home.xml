@@ -214,7 +214,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:fontFamily="@font/poppins_semibold"
-                            android:text="Status"
+                            android:text="Check Point"
                             android:textColor="@color/black"
                             android:textSize="20sp" />
 

@@ -22,60 +22,78 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
-        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.RhinoPacking"
         tools:targetApi="31">
         <activity
-            android:name=".HomeStatusAgregar"
+            android:name=".HomeCheckPointDetalles"
             android:exported="false" />
         <activity
-            android:name=".HomeStatus"
-            android:exported="false" />
+            android:name=".HomeCheckPointAgregar"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".HomeCheckPoint"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeMostrar"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomePerfil"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeTabulador"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeRegistrosDetallesAsignar"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeRegistrosDetalles"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeRegistrosAgregarPaquete"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeRegistrosAgregar"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeFinalizar"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".HomeRegistros"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.RhinoPacking.FilterGroup" />
         <activity
             android:name=".HomeAcerca"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginOTP"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Login"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.RhinoPacking.Login" />
         <activity
             android:name=".Home"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.RhinoPacking.Loading">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -85,6 +103,7 @@
         </activity>
         <activity
             android:name=".CaptureAct"
+            android:screenOrientation="portrait"
             android:stateNotNeeded="true"
             android:theme="@style/zxing_CaptureTheme" />
     </application>

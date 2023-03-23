@@ -3,16 +3,11 @@ package com.rhinopacking;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -24,21 +19,18 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rhinopacking.DB.SQL;
-import com.rhinopacking.adapters.RegistroPaquetesListAdapter;
 import com.rhinopacking.includes.Toolbar;
 import com.rhinopacking.models.Fecha;
-import com.rhinopacking.models.RegistroPaquete;
-import com.rhinopacking.models.Status;
-import com.rhinopacking.models.User;
+import com.rhinopacking.models.CheckPoint;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeStatus extends AppCompatActivity {
+public class HomeCheckPoint extends AppCompatActivity {
 
     SQL mSql;
 
@@ -56,7 +48,7 @@ public class HomeStatus extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_status);
+        setContentView(R.layout.activity_home_checkpoint);
         Toolbar.show(this, true, "Status");
 
         //Home.mUser = new User("Jesus", "3319522734", false);
@@ -105,7 +97,7 @@ public class HomeStatus extends AppCompatActivity {
         });
 
         btnAddStatus.setOnClickListener(view ->{
-            Intent intent = new Intent(this, HomeStatusAgregar.class);
+            Intent intent = new Intent(this, HomeCheckPointAgregar.class);
             someActivityResultLauncher.launch(intent);
         });
 
@@ -121,11 +113,19 @@ public class HomeStatus extends AppCompatActivity {
 
 
     @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
-    private void table(Status mStatus)
+    private void table(CheckPoint mStatus)
     {
         TableRow tableRow;
-        TextView codigo, medidas, cajas, status, fecha;
+        /*TableLayout.LayoutParams tableRowParams= new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,TableLayout.LayoutParams.MATCH_PARENT);
 
+        int leftMargin=0;
+        int topMargin=10;
+        int rightMargin=0;
+        int bottomMargin=10;
+
+        tableRowParams.setMargins(leftMargin, topMargin, rightMargin, bottomMargin);*/
+
+        TextView codigo, medidas, cajas, status, fecha;
 
         codigo = new TextView(this);
         medidas = new TextView(this);
@@ -140,35 +140,42 @@ public class HomeStatus extends AppCompatActivity {
         fecha.setGravity(Gravity.CENTER);
         tableRow = new TableRow(this);
 
-
-        if(mStatus.getStatus().contains("G") && mStatus.getStatus().contains("D") && mStatus.getStatus().contains("L"))
-        {
-            tableRow.setBackgroundResource(R.drawable.table_verde_claro);
-        }
-        else if(mStatus.getStatus().contains("L") && mStatus.getStatus().contains("A"))
-        {
-            tableRow.setBackgroundResource(R.drawable.table_azul_claro);
-        }
-        else if(mStatus.getStatus().contains("N") && mStatus.getStatus().contains("G"))
-        {
-            tableRow.setBackgroundResource(R.drawable.table_amarillo_claro);
-        }
-        else if(mStatus.getStatus().contains("D") && mStatus.getStatus().contains("F"))
+        String sStatus = "";
+        if(mStatus.isCheckpoint_df())
         {
             tableRow.setBackgroundResource(R.drawable.table_rojo_claro);
+            sStatus = "DF";
+            fecha.setText(mStatus.getFechaString(mStatus.getFecha_df()));
+
+        }
+        else if(mStatus.isCheckpoint_gdl())
+        {
+            tableRow.setBackgroundResource(R.drawable.table_verde_claro);
+            sStatus = "GDL";
+            fecha.setText(mStatus.getFechaString(mStatus.getFecha_gdl()));
+        }
+        else if(mStatus.isCheckpoint_ng())
+        {
+            tableRow.setBackgroundResource(R.drawable.table_amarillo_claro);
+            sStatus = "NG";
+            fecha.setText(mStatus.getFechaString(mStatus.getFecha_ng()));
+        }
+        else if(mStatus.isCheckpoint_la())
+        {
+            tableRow.setBackgroundResource(R.drawable.table_azul_claro);
+            sStatus = "LA";
+            fecha.setText(mStatus.getFechaString(mStatus.getFecha_la()));
         }
         else
         {
             tableRow.setBackgroundResource(R.drawable.table_gris_claro);
         }
-
+        status.setText(sStatus);
 
 
         codigo.setText(Integer.toString(mStatus.getCodigo()));
         medidas.setText(Float.toString(mStatus.getMedidas()));
         cajas.setText(Integer.toString(mStatus.getCajas()));
-        status.setText(mStatus.getStatus());
-        fecha.setText(new SimpleDateFormat("dd-MM-yyyy").format(mStatus.getFecha()));
 
         tableRow.addView(codigo);
         tableRow.addView(medidas);
@@ -176,8 +183,17 @@ public class HomeStatus extends AppCompatActivity {
         tableRow.addView(status);
         tableRow.addView(fecha);
 
+        if(Home.mUser.isAdministrador())
+        {
+            tableRow.setOnClickListener(view -> {
+                Intent intent = new Intent(this, HomeCheckPointDetalles.class);
+                intent.putExtra("id_checkpoint", Integer.toString(mStatus.getId_checkpoint()));
+                someActivityResultLauncher.launch(intent);
+            });
+        }
 
-
+        tableRow.setPadding(0,15,0,15);
+        //tableRow.setLayoutParams(tableRowParams);
         tableLayout.addView(tableRow);
 
 
@@ -188,7 +204,7 @@ public class HomeStatus extends AppCompatActivity {
     private void loadDatos(int position) {
         new Thread(() -> {
             try {
-                if(mSql.consultarStatus(mFechas.get(position).getMes(), mFechas.get(position).getYear()))
+                if(mSql.consultarCheckPoint(mFechas.get(position).getMes(), mFechas.get(position).getYear()))
                 {
 
                     int count=tableLayout.getChildCount();

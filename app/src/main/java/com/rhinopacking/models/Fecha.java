@@ -81,8 +81,17 @@ public class Fecha {
         this.year = year;
     }
 
+    public String getFechaString()
+    {
+        return dia+"/"+mes+"/"+year;
+    }
+
     public String getSqlFecha()
     {
         return year+"/"+mes+"/"+dia;
+    }
+
+    public int getDia() {
+        return dia;
     }
 }

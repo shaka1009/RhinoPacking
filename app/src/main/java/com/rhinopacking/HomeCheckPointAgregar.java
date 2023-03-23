@@ -15,16 +15,15 @@ import com.rhinopacking.DB.SQL;
 import com.rhinopacking.includes.PopupError;
 import com.rhinopacking.includes.Toolbar;
 import com.rhinopacking.models.Fecha;
-import com.rhinopacking.models.Status;
+import com.rhinopacking.models.CheckPoint;
 
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
 import java.util.Calendar;
-import java.util.Date;
 
-public class HomeStatusAgregar extends AppCompatActivity {
+public class HomeCheckPointAgregar extends AppCompatActivity {
 
-    EditText etCodigo, etMedidas, etCantidad, etStatus;
+    EditText etCodigo, etMedidas, etCantidad, etObservaciones;
     Button btnMenos, btnMas, btnAddStatus;
     CalendarView cvFecha;
     Fecha mFecha;
@@ -39,7 +38,7 @@ public class HomeStatusAgregar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_status_agregar);
+        setContentView(R.layout.activity_home_checkpoint_agregar);
         Toolbar.show(this, true);
 
 
@@ -50,12 +49,12 @@ public class HomeStatusAgregar extends AppCompatActivity {
     private void declaration() {
         etCodigo = findViewById(R.id.etCodigo);
         etMedidas = findViewById(R.id.etMedidas);
-        etStatus= findViewById(R.id.etStatus);
         btnMenos = findViewById(R.id.btnMenos);
         btnMas = findViewById(R.id.btnMas);
         etCantidad = findViewById(R.id.etCantidad);
         cvFecha = findViewById(R.id.calendarView);
         btnAddStatus = findViewById(R.id.btnAddStatus);
+        etObservaciones = findViewById(R.id.etObservaciones);
 
         mSql = new SQL();
 
@@ -73,7 +72,7 @@ public class HomeStatusAgregar extends AppCompatActivity {
     private void listener()
     {
         btnMenos.setOnClickListener(view -> {
-            UIUtil.hideKeyboard(HomeStatusAgregar.this); //ESCONDER TECLADO
+            UIUtil.hideKeyboard(HomeCheckPointAgregar.this); //ESCONDER TECLADO
             if(cantidad>1)
             {
                 cantidad--;
@@ -89,7 +88,7 @@ public class HomeStatusAgregar extends AppCompatActivity {
 
         btnMas.setOnClickListener(view -> {
 
-            UIUtil.hideKeyboard(HomeStatusAgregar.this); //ESCONDER TECLADO
+            UIUtil.hideKeyboard(HomeCheckPointAgregar.this); //ESCONDER TECLADO
 
             if(etCantidad.getText().toString().equals(""))
             {
@@ -121,6 +120,9 @@ public class HomeStatusAgregar extends AppCompatActivity {
                 return;
             else pressButton = true;
 
+            Calendar c1 = Calendar.getInstance();
+
+
 
             if(etCodigo.getText().toString().equals(""))
             {
@@ -137,26 +139,18 @@ public class HomeStatusAgregar extends AppCompatActivity {
                 mPopupError.setPopupError("Ingresa cantidad de Cajas.");
                 SleepButton();
             }
-            else if(etStatus.getText().toString().equals(""))
+            else if((mFecha.getMes()>(c1.get(Calendar.MONTH) +1))&&(mFecha.getYear()>=c1.get(Calendar.YEAR))||((mFecha.getDia() > c1.get(Calendar.DAY_OF_MONTH))&&(mFecha.getMes() == (c1.get(Calendar.MONTH) +1))&&(mFecha.getYear()==c1.get(Calendar.YEAR))))
             {
-                mPopupError.setPopupError("Ingresa un Status.");
+                mPopupError.setPopupError("Mes no válido.");
                 SleepButton();
-            } else
+            }
+            else
             {
-                Status mStatus = new Status(Integer.parseInt(etCodigo.getText().toString()), Float.parseFloat(etMedidas.getText().toString()), cantidad, etStatus.getText().toString().toUpperCase(), mFecha);
+               CheckPoint mStatus = new CheckPoint(Integer.parseInt(etCodigo.getText().toString()), Float.parseFloat(etMedidas.getText().toString()), cantidad, mFecha, etObservaciones.getText().toString());
 
-                if(!(mStatus.getStatus().contains("G") && mStatus.getStatus().contains("D") && mStatus.getStatus().contains("L"))
-                        && !(mStatus.getStatus().contains("L") && mStatus.getStatus().contains("A"))
-                        && !(mStatus.getStatus().contains("N") && mStatus.getStatus().contains("G"))
-                && !(mStatus.getStatus().contains("N") && mStatus.getStatus().contains("G"))
-                && !(mStatus.getStatus().contains("D") && mStatus.getStatus().contains("F")))
-                {
-                    mPopupError.setPopupError("Debes ingrear un Status válido.");
-                    SleepButton();
-                }
-                else {
+
                     new Thread(() -> {
-                        if(mSql.insertarStatus(mStatus))
+                        if(mSql.insertarCheckPoint(mStatus))
                         {
                             runOnUiThread(() -> {
                                 Toast.makeText(this, "Status Añadito", Toast.LENGTH_SHORT).show();
@@ -174,11 +168,6 @@ public class HomeStatusAgregar extends AppCompatActivity {
                             SleepButton();
                         }
                     }).start();
-                }
-
-
-
-
 
 
 

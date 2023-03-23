@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeStatusAgregar">
+    tools:context=".HomeCheckPointAgregar">
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
@@ -26,6 +26,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                style="@style/CardView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CheckPoint"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/open_sans_bold"
+                        android:layout_marginStart="5dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/etStatus"
+                        android:textSize="14sp"
+                        android:shadowColor="@color/black"
+                        android:fontFamily="@font/open_sans"
+                        android:hint="Los Ángeles."
+                        android:textColorHint="@color/black"
+                        android:layout_margin="5dp"
+                        android:drawableStart="@drawable/ic_location"
+                        android:drawablePadding="10dp"
+                        android:maxLength="10"
+                        android:gravity="left|center"
+                        android:singleLine="true"
+                        android:ellipsize = "end"
+                        android:enabled="false"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 style="@style/CardView"
@@ -172,11 +211,19 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+
+            <CalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:layout_gravity="center"/>
             <androidx.cardview.widget.CardView
                 style="@style/CardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -185,40 +232,38 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Status"
+                        android:text="Observaciones (Opcional) "
                         android:textColor="@color/black"
                         android:textSize="16sp"
+                        android:layout_marginStart="5dp"
                         android:fontFamily="@font/open_sans_bold"
-                        android:layout_marginStart="5dp" />
+                        android:layout_marginBottom="5dp"/>
+
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <com.google.android.material.textfield.TextInputEditText
+
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/etStatus"
+                            android:id="@+id/etObservaciones"
                             android:textSize="14sp"
                             android:shadowColor="@color/black"
                             android:fontFamily="@font/open_sans"
-                            android:hint="Ingresa Status."
+                            android:hint="Ingresa alguna observación."
                             android:layout_margin="5dp"
-                            android:drawableStart="@drawable/ic_location"
+                            android:drawableStart="@drawable/ic_observaciones"
                             android:drawablePadding="10dp"
-                            android:maxLength="10"
+                            android:maxLength="200"
                             android:gravity="left|center"
-                            android:singleLine="true"
-                            android:ellipsize = "end" />
+                            android:singleLine="false"
+                            android:ellipsize = "end"/>
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
-
-            <CalendarView
-                android:id="@+id/calendarView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/black"
-                android:layout_gravity="center"/>
         </LinearLayout>
 
     </ScrollView>
