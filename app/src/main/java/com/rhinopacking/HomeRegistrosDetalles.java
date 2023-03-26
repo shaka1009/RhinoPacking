@@ -381,6 +381,25 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                 mPopupMostrarFoto.setPopupFoto(mRegistrosGuias.get(i).getFoto());
             }
         });
+
+
+        gvComplementos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(HomeRegistrosDetalles.this, HomeMostrar.class);
+
+
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                mComplementos.get(i).getFoto().compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                byte[] bytesImage = byteArrayOutputStream.toByteArray();
+
+
+                intent.putExtra("img", bytesImage);
+                //startActivity(intent);
+
+                mPopupMostrarFoto.setPopupFoto(mComplementos.get(i).getFoto());
+            }
+        });
     }
 
     ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
