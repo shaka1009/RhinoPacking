@@ -9,6 +9,7 @@ import android.util.Log;
 import com.rhinopacking.models.Fecha;
 import com.rhinopacking.models.Operador;
 import com.rhinopacking.models.Registro;
+import com.rhinopacking.models.RegistroComplemento;
 import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
 import com.rhinopacking.models.CheckPoint;
@@ -49,8 +50,8 @@ public class SQL {
                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
                 Class.forName("net.sourceforge.jtds.jdbc.Driver").newInstance();
-                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
-                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.8:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
+                //mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://"+ ip + ":"+puerto+";DatabaseName="+dbName+";user="+user+";password=" + password + extras);
+                mConection = DriverManager.getConnection("jdbc:jtds:sqlserver://192.168.100.8:1433;DatabaseName=RhinoPacking;user=sa;password=asd123");
 
             }
         }catch(Exception e){ Log.d("Shaka", "ERROR connect: " + e);}
@@ -69,6 +70,12 @@ public class SQL {
 
     public List<Registro> getRegistros() {
         return mRegistros;
+    }
+
+    List <RegistroComplemento> mComplementos;
+
+    public List<RegistroComplemento> getmComplementos() {
+        return mComplementos;
     }
 
     public List<RegistroPaquete> mRegistrosPaquetes;
@@ -281,8 +288,6 @@ public class SQL {
             while(rs.next()){
                 indexGuia = rs.getInt("id_guia");
 
-
-
                 //LEER O GUARDAR
                 try
                 {
@@ -297,16 +302,12 @@ public class SQL {
                         stmGuia = mConection.createStatement();
                         rsGuia = stmGuia.executeQuery("SELECT foto FROM dbo.registros_guia WHERE id_guia='"+indexGuia+"'");
 
-
-
                         while(rsGuia.next())
                         {
                             byte[] bytes = rsGuia.getBytes("foto");
                             bitmapGuia = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
                             guardarImagen(codigo, "GUIA", bitmapGuia, indexGuia);
-
-
 
                             Log.d("Shaka", "Imagen Guía leída desde SQL");
                         }
@@ -326,6 +327,69 @@ public class SQL {
 
             return true;
         }catch (Exception e){
+            return false;
+        }
+    }
+
+
+    public boolean consultarComplementos(String codigo)
+    {
+        mComplementos = new ArrayList<>();
+        RegistroComplemento registroComplemento;
+        ResultSet rs;
+        ResultSet rsComplemento;
+        Statement stm;
+        Statement stmComplemento;
+
+        Bitmap bitmapComplemento= null;
+
+        int indexComplemento;
+        try{
+            connect();
+
+            stm = mConection.createStatement();
+            rs = stm.executeQuery("SELECT id_complemento FROM dbo.registros_complementos WHERE codigo='"+codigo+"'");
+
+            while(rs.next()){
+                indexComplemento = rs.getInt("id_complemento");
+
+                //LEER O GUARDAR
+                try
+                {
+                    bitmapComplemento = getBitmapFromDir(codigo, "COM", indexComplemento);
+                    Log.d("Shaka", "Imagen Complemento leída desde memoria");
+
+                }
+                catch (Exception e)
+                {
+                    try
+                    {
+                        stmComplemento = mConection.createStatement();
+                        rsComplemento = stmComplemento.executeQuery("SELECT foto FROM dbo.registros_complementos WHERE id_complemento='"+indexComplemento+"'");
+
+                        while(rsComplemento.next())
+                        {
+                            byte[] bytes = rsComplemento.getBytes("foto");
+                            bitmapComplemento = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+                            guardarImagen(codigo, "COM", bitmapComplemento, indexComplemento);
+
+                            Log.d("Shaka", "Imagen Complemento leída desde SQL");
+                        }
+
+                    }catch (Exception i)
+                    {
+                        Log.d("Shaka", "consultarComplemento Error: " + i);
+                    }
+
+                }
+
+                registroComplemento = new RegistroComplemento(indexComplemento, codigo, bitmapComplemento);
+                mComplementos.add(registroComplemento);
+            }
+            return true;
+        }catch (Exception e){
+            Log.d("Shaka", "consultarComplemento Error: " + e);
             return false;
         }
     }
@@ -402,7 +466,7 @@ public class SQL {
     }
 
 
-    public boolean addRegistro(Registro registro, List<RegistroPaquete> paquetes, List<RegistroGuia> guias){
+    public boolean addRegistro(Registro registro, List<RegistroPaquete> paquetes, List<RegistroGuia> guias, List<Bitmap> complementos ){
 
         ResultSet rs;
         Statement stm;
@@ -423,6 +487,13 @@ public class SQL {
 
             for (int i=0;i<guias.size();i++) {
                 if(!insertarDatosGuia(registro.getCodigo(), guias.get(i)))
+                {
+                    return false;
+                }
+            }
+
+            for (int i=0;i<complementos.size();i++) {
+                if(!insertarComplementos(registro.getCodigo(), complementos.get(i)))
                 {
                     return false;
                 }
@@ -473,10 +544,6 @@ public class SQL {
 
     public  boolean insertarDatosGuia(String codigo, RegistroGuia registroGuia){
 
-        ResultSet rs;
-        Statement stm;
-
-
         try{
 
             connect();
@@ -496,6 +563,32 @@ public class SQL {
 
             return true;
         }catch (Exception e){ Log.d("Shaka", "Error insertarDatosGuia: " + e); return false;}
+    }
+
+    public  boolean insertarComplementos(String codigo, Bitmap bitmap){
+
+        ResultSet rs;
+        Statement stm;
+
+
+        try{
+
+            connect();
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] bytesImage1 = byteArrayOutputStream.toByteArray();
+
+            String query = "INSERT INTO [RhinoPacking].[dbo].[registros_complementos] ([codigo], [foto]) " +
+                    "VALUES ('"+codigo+"',?)";
+
+            PreparedStatement preparedStatement = mConection.prepareStatement(query);
+            preparedStatement.setBytes(1, bytesImage1);
+
+            preparedStatement.execute();
+
+            return true;
+        }catch (Exception e){ Log.d("Shaka", "Error insertarComplementos: " + e); return false;}
     }
 
 

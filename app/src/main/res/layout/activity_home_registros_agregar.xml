@@ -31,11 +31,32 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clImagen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp">
 
+
+                <ImageView
+                    android:id="@+id/ciComplemento"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/logo_azul"
+                    android:scaleType="fitXY"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvContador"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    app:layout_constraintBottom_toBottomOf="@+id/ciComplemento"
+                    app:layout_constraintStart_toEndOf="@+id/ciComplemento"
+                    app:layout_constraintTop_toTopOf="@+id/ciComplemento"
+                    android:layout_marginStart="5dp"/>
 
                 <ImageView
                     android:id="@+id/ciFotoBodega"

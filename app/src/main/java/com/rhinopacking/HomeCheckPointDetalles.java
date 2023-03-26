@@ -54,7 +54,6 @@ public class HomeCheckPointDetalles extends AppCompatActivity {
         Toolbar.show(this, true, "CheckPoint");
 
         id_checkpoint = getIntent().getStringExtra("id_checkpoint");
-        Toast.makeText(this, "ID: "+ id_checkpoint, Toast.LENGTH_SHORT).show();
         declaration();
         listener();
         consultarCheckPoint();

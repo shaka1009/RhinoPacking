@@ -66,7 +66,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
 
     private boolean pressButton = false;
-    TextView tvCodigo;
+    TextView tvCodigo, tvContador;
 
     SQL mSql;
 
@@ -77,7 +77,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
     private ConnectivityManager cm;
     FloatingActionButton faFotoBodega;
 
-    ImageView ciFotoBodega;
+    ImageView ciFotoBodega, ciComplemento;
 
     ImageButton ibAddPaquete, ibAddGuia;
 
@@ -92,6 +92,8 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
     public static List<RegistroPaquete> mRegistrosPaquetes;
     public static List<RegistroGuia> mRegistrosGuias;
+
+    List<Bitmap> mComplementos;
 
 
     private CoordinatorLayout snackbar;
@@ -141,6 +143,8 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
         etCosto = findViewById(R.id.etCosto);
         etObservaciones = findViewById(R.id.etObservaciones);
 
+        tvContador = findViewById(R.id.tvContador);
+
         llSinPagar = findViewById(R.id.llSinPagar);
         llEfectivo = findViewById(R.id.llEfectivo);
         llTransferencia = findViewById(R.id.llTransferencia);
@@ -153,10 +157,12 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
         ciFotoBodega = findViewById(R.id.ciFotoBodega);
         faFotoBodega = findViewById(R.id.faFotoBodega);
         ibAddPaquete = findViewById(R.id.ibAddPaquete);
+        ciComplemento = findViewById(R.id.ciComplemento);
 
 
         mRegistrosPaquetes = new ArrayList<>();
         mRegistrosGuias = new ArrayList<>();
+        mComplementos = new ArrayList<>();
 
         mRecyclerPaquetes = findViewById(R.id.rvPaquetes);
         mRecyclerGuias = findViewById(R.id.rvGuias);
@@ -176,6 +182,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
         snackbarError = new SnackbarError(snackbar, this);
 
         mPopupMostrarFoto = new PopupMostrarFoto(this, getApplicationContext(), findViewById(R.id.popupMostrarFoto));
+
     }
 
     @SuppressLint("SuspiciousIndentation")
@@ -262,6 +269,19 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
             PickImageGuias();
         });
 
+        ciComplemento.setOnClickListener(view ->{
+            if(pressButton)
+                return;
+            else
+                pressButton = true;
+
+
+            PickImageComplemento();
+            //camaraLauncher.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+
+            SleepButton();
+        });
+
         btnAgregarRegistro.setOnClickListener(v->{
 
             if(pressButton)
@@ -326,7 +346,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                     Registro registro = new Registro(codigo, etNombre.getText().toString(), etTelefono.getText().toString(), precio, !rbSinPagar.isChecked(), metodo, "EN_BODEGA", etObservaciones.getText().toString(), bitmap);
 
 
-                    if(mSql.addRegistro(registro, mRegistrosPaquetes, mRegistrosGuias))
+                    if(mSql.addRegistro(registro, mRegistrosPaquetes, mRegistrosGuias, mComplementos))
                     {
                         saveImagen(bitmap);
 
@@ -359,6 +379,19 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
     }
 
 
+    private void PickImageComplemento() {
+        ImagePicker.Companion.with(HomeRegistrosAgregar.this)
+                .crop()
+                .cropSquare()
+                .maxResultSize(Home.RESOLUCION,Home.RESOLUCION)
+                .provider(ImageProvider.GALLERY) //Or bothCameraGallery()
+                .createIntent(intent ->{
+                    foto_complemento.launch(intent);
+                    return null;
+                });
+                //.start();
+    }
+
     private void PickImage() {
         ImagePicker.Companion.with(HomeRegistrosAgregar.this)
                 .crop()
@@ -369,7 +402,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                     foto_bodega.launch(intent);
                     return null;
                 });
-                //.start();
+        //.start();
     }
 
     private void PickImageGuias() {
@@ -395,9 +428,6 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
                         //ciFotoBodega.setImageBitmap(bitmap);
 
-
-
-
                         RegistroGuia registroGuia = new RegistroGuia(codigo, bitmap);
                         mRegistrosGuias.add(registroGuia);
 
@@ -415,38 +445,12 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                         mRecyclerGuias.setLayoutManager(new LinearLayoutManager(this));
                         mRecyclerGuias.setAdapter(registrosGuiaListAdapter);
 
-                        Toast.makeText(this, "Total: " + mRegistrosGuias.size(), Toast.LENGTH_SHORT).show();
                     }catch (Exception e) {}
 
                     SleepButton();
                 }
             });
 
-/*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            Uri uri=data.getData();
-            //imageView.setImageURI(uri);
-
-
-
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
-                ciFotoBodega.setImageBitmap(bitmap);
-            }catch (Exception e) {}
-
-
-
-
-            SleepButton();
-        } else if (resultCode == ImagePicker.RESULT_ERROR) {
-            SleepButton();
-        } else {
-            SleepButton();
-        }
-    }*/
 
     private void saveImagen(Bitmap bitmap)
     {
@@ -549,6 +553,24 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
 
             }
         });
+
+    @SuppressLint("SetTextI18n")
+    ActivityResultLauncher<Intent> foto_complemento = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Uri uri=result.getData().getData();
+                    //imageView.setImageURI(uri);
+
+
+                    try {
+                        mComplementos.add(MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri));
+                        tvContador.setText(Integer.toString(mComplementos.size()));
+                        //ciFotoBodega.setImageBitmap(bitmap);
+                    }catch (Exception e) {}
+
+                }
+            });
 
     public void removeItem(int position) {
         mRegistrosPaquetes.remove(position);

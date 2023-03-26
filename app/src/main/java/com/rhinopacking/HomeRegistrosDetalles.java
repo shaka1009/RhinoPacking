@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.rhinopacking.DB.SQL;
+import com.rhinopacking.adapters.RegistroComplementosGridAdapter;
 import com.rhinopacking.adapters.RegistroGuiasGridAdapter;
 import com.rhinopacking.adapters.RegistroGuiasListAdapter;
 import com.rhinopacking.adapters.RegistroPaquetesListAdapter;
@@ -43,6 +44,7 @@ import com.rhinopacking.includes.PopupError;
 import com.rhinopacking.includes.PopupMostrarFoto;
 import com.rhinopacking.includes.Toolbar;
 import com.rhinopacking.models.Registro;
+import com.rhinopacking.models.RegistroComplemento;
 import com.rhinopacking.models.RegistroGuia;
 import com.rhinopacking.models.RegistroPaquete;
 
@@ -81,6 +83,8 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
     List<RegistroPaquete> mRegistrosPaquetes;
     List<RegistroGuia> mRegistrosGuias;
+
+    List<RegistroComplemento> mComplementos;
     RegistroPaquetesListAdapter registrosPaqueteListAdapter;
     RegistroGuiasListAdapter registrosGuiaListAdapter;
     private RecyclerView mRecyclerPaquetes;
@@ -90,7 +94,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
     private boolean pressButton;
 
-    CardView cvOperador, cvGuias;
+    CardView cvOperador, cvGuias, cvComplementos;
 
     PopupEliminar mPopup;
     PopupMostrarFoto mPopupMostrarFoto;
@@ -101,7 +105,9 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
 
     RegistroGuiasGridAdapter mRegistroGuiasGridAdapter;
+    RegistroComplementosGridAdapter mRegistroComplementosGridAdapter;
     GridView gvGuias;
+    GridView gvComplementos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +139,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
 
         gvGuias = findViewById(R.id.gvGuias);
+        gvComplementos = findViewById(R.id.gvComplementos);
 
         tvStatus = findViewById(R.id.tvStatus);
 
@@ -158,6 +165,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
         mRegistrosPaquetes = new ArrayList<>();
         mRegistrosGuias = new ArrayList<>();
+        mComplementos = new ArrayList<>();
         mRecyclerPaquetes = findViewById(R.id.rvPaquetes);
         mRecyclerGuias = findViewById(R.id.rvGuias);
 
@@ -167,6 +175,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
 
         cvOperador = findViewById(R.id.cvOperador);
         cvGuias = findViewById(R.id.cvGuias);
+        cvComplementos = findViewById(R.id.cvComplementos);
         habilitar(false);
 
         btnFinalizar = findViewById(R.id.btnFinalizar);
@@ -597,30 +606,36 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
                     if(mRegistrosGuias.size()!=0)
                     {
                         runOnUiThread(() -> {
-                            /*
-                            registrosGuiaListAdapter = new RegistroGuiasListAdapter(mRegistrosGuias, this);
-                            mRecyclerGuias.setHasFixedSize(true);
-                            mRecyclerGuias.setLayoutManager(new LinearLayoutManager(this));
-                            mRecyclerGuias.setAdapter(registrosGuiaListAdapter);
-*/
-
                             mRegistroGuiasGridAdapter = new RegistroGuiasGridAdapter(HomeRegistrosDetalles.this, mRegistrosGuias);
                             gvGuias.setAdapter(mRegistroGuiasGridAdapter);
-
-
                         });
-
-
                     }
                     else {
                         runOnUiThread(() -> {
                             cvGuias.setVisibility(View.GONE);
                         });
                     }
-
-
                 }
+            }).start();
 
+            new Thread(() -> {
+                if(mSql.consultarComplementos(codigo))
+                {
+                    mComplementos = mSql.getmComplementos();
+
+                    if(mComplementos.size()!=0)
+                    {
+                        runOnUiThread(() -> {
+                            mRegistroComplementosGridAdapter = new RegistroComplementosGridAdapter(HomeRegistrosDetalles.this, mComplementos);
+                            gvComplementos.setAdapter(mRegistroComplementosGridAdapter);
+                        });
+                    }
+                    else {
+                        runOnUiThread(() -> {
+                            cvComplementos.setVisibility(View.GONE);
+                        });
+                    }
+                }
             }).start();
         }).start();
 
