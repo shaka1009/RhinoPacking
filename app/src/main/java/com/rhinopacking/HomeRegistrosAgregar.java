@@ -55,6 +55,9 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class HomeRegistrosAgregar extends AppCompatActivity {
 
 
@@ -302,7 +305,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                         mPopupError.setPopupError("Debes ingresar al menos el Nombre.");
                     });
                     SleepButton();
-                }
+                }/*
                 else if (etTelefono.length() !=0 && etTelefono.length() != 10)
                 {
 
@@ -310,7 +313,7 @@ public class HomeRegistrosAgregar extends AppCompatActivity {
                         mPopupError.setPopupError("El número de teléfono debe ser de 10 dígitos.");
                     });
                     SleepButton();
-                }
+                }*/
                 else if(mRegistrosPaquetes.size()==0)
                 {
 

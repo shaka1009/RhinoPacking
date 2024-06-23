@@ -1030,7 +1030,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
             });
             SleepButton();
         }
-        if(etTelefono.getText().toString().equals(""))
+        /*if(etTelefono.getText().toString().equals(""))
         {
             runOnUiThread(() -> mPopupError.setPopupError("Debes ingresar el Teléfono."));
             SleepButton();
@@ -1041,7 +1041,7 @@ public class HomeRegistrosDetalles extends AppCompatActivity {
             runOnUiThread(() -> mPopupError.setPopupError("El número de teléfono debe ser de 10 dígitos."));
             SleepButton();
         }
-        else if(etCosto.getText().toString().equals(""))
+        else */if(etCosto.getText().toString().equals(""))
         {
             runOnUiThread(() -> mPopupError.setPopupError("Debes ingresar el Costo."));
             SleepButton();

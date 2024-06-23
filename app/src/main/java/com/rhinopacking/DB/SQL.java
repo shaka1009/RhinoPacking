@@ -28,14 +28,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SQL {
     private Connection mConection=null;
 
 
-    private final static String ip = "34.174.171.223";
+    private final static String ip = "play.zorro-craft.com";
     private final static String puerto = "1433";
-    private final static String user = "sqlserver";
-    private final static String password = "sqlmagage10";
+    private final static String user = "sa";
+    private final static String password = "jeenmage12A";
     private final static String dbName = "RhinoPacking";
     private final static String extras = "";
 

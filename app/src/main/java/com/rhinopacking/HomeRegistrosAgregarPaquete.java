@@ -34,7 +34,10 @@ import com.rhinopacking.includes.Toolbar;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.util.UIUtil;
 
+
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
 
@@ -144,6 +147,10 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
 
 
         btnAgregarPaquete.setOnClickListener(view -> {
+            String pattern = "(\\d+x\\d+x\\d+)(-\\d+x\\d+x\\d+)*";
+            String testString1 = etMedidas.getText().toString();
+            Pattern compiledPattern = Pattern.compile(pattern);
+
 
             if(bitmap==null)
                 mPopupError.setPopupError("Debes tomar la foto del paquete.");
@@ -152,8 +159,9 @@ public class HomeRegistrosAgregarPaquete extends AppCompatActivity {
             else if(etMedidas.getText().toString().equals(""))
                 mPopupError.setPopupError("Ingresa una medida");
 
+
             //else if(!Pattern.matches("[0-9]+[xX][0-9]+[xX][0-9]+", etMedidas.getText().toString())) // de uno
-            else if(!Pattern.matches("([0-9]+[xX][0-9]+[xX][0-9]+)([-][0-9]+[xX][0-9]+[xX][0-9]+)*", etMedidas.getText().toString()))
+            else if(!compiledPattern.matcher(testString1).matches())
                 mPopupError.setPopupError("El formato de las medidas debe de ser de 3 dimensiones separando los números con una 'x'. O si son más dimensiones, separadas con un '-'.");
             else {
                 Intent resultIntent = new Intent();
