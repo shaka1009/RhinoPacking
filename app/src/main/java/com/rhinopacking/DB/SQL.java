@@ -35,11 +35,11 @@ public class SQL {
     private Connection mConection=null;
 
 
-    private final static String ip = "play.zorro-craft.com";
-    private final static String puerto = "1433";
-    private final static String user = "sa";
-    private final static String password = "jeenmage12A";
-    private final static String dbName = "RhinoPacking";
+    private final static String ip = "";
+    private final static String puerto = "";
+    private final static String user = "";
+    private final static String password = "";
+    private final static String dbName = "";
     private final static String extras = "";
 
 //LOCAL
